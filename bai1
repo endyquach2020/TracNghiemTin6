@@ -1,0 +1,1134 @@
+  <!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Luyện tập Tin học 6 - Bài 1: Thông tin và Dữ liệu</title>
+  <style>
+    :root {
+      --primary: #1e5a38;
+      --primary-dark: #133c24;
+      --primary-light: #2d7e50;
+      --accent: #2563eb;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #cbd5e1;
+      --success-bg: #dcfce7;
+      --success-border: #22c55e;
+      --success-text: #15803d;
+      --error-bg: #fee2e2;
+      --error-border: #ef4444;
+      --error-text: #b91c1c;
+      --sidebar-width: 300px;
+      --header-h: 60px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 17px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      height: var(--header-h);
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .brand-sub {
+      font-size: 0.8rem;
+      opacity: 0.85;
+      font-weight: normal;
+    }
+
+    .btn-header {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      touch-action: manipulation;
+    }
+
+    .btn-header:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-header.active {
+      background: #ffffff;
+      color: var(--primary-dark);
+    }
+
+    /* App Container */
+    .app-container {
+      display: flex;
+      flex: 1;
+      position: relative;
+      min-height: calc(100vh - var(--header-h));
+    }
+
+    /* Sidebar Drawer */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--card-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - var(--header-h));
+      position: sticky;
+      top: var(--header-h);
+      transition: transform 0.3s ease;
+      z-index: 90;
+    }
+
+    .sidebar-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: #f1f5f9;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-content {
+      padding: 16px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .q-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .q-btn {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+
+    .q-btn:hover {
+      border-color: var(--primary);
+    }
+
+    .q-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary-dark);
+    }
+
+    .q-btn.correct {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .q-btn.incorrect {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .q-btn.partial {
+      background: #fef3c7;
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+
+    /* Main Viewport */
+    .main-viewport {
+      flex: 1;
+      padding: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      padding: 28px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .badge-type {
+      background: #f1f5f9;
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .stem {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    /* Multiple choice */
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .opt-btn {
+      display: flex;
+      align-items: center;
+      padding: 14px 18px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      font-size: 1.05rem;
+      text-align: left;
+      transition: all 0.2s;
+      color: var(--text);
+    }
+
+    .opt-btn:hover {
+      border-color: var(--primary);
+      background: #f8fafc;
+    }
+
+    .opt-tag {
+      font-weight: 800;
+      margin-right: 12px;
+      background: #e2e8f0;
+      color: #334155;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .opt-btn.selected {
+      border-color: var(--primary);
+      background: #f0fdf4;
+    }
+
+    .opt-btn.selected .opt-tag {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .opt-btn.correct {
+      background: var(--success-bg) !important;
+      border-color: var(--success-border) !important;
+      color: var(--success-text) !important;
+    }
+
+    .opt-btn.correct .opt-tag {
+      background: var(--success-border) !important;
+      color: #fff !important;
+    }
+
+    .opt-btn.incorrect {
+      background: var(--error-bg) !important;
+      border-color: var(--error-border) !important;
+      color: var(--error-text) !important;
+    }
+
+    .opt-btn.incorrect .opt-tag {
+      background: var(--error-border) !important;
+      color: #fff !important;
+    }
+
+    /* True/False table */
+    .tf-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+      margin-bottom: 20px;
+    }
+
+    .tf-row td {
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+    }
+
+    .tf-desc {
+      border-right: none;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      font-size: 1.05rem;
+    }
+
+    .tf-btns {
+      border-left: none;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      text-align: right;
+      white-space: nowrap;
+      width: 180px;
+    }
+
+    .tf-choice-btn {
+      padding: 8px 16px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 6px;
+      border: 2px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      margin-left: 6px;
+      transition: all 0.15s;
+    }
+
+    .tf-choice-btn.selected-t {
+      background: #2563eb;
+      color: #fff;
+      border-color: #1d4ed8;
+    }
+
+    .tf-choice-btn.selected-f {
+      background: #ea580c;
+      color: #fff;
+      border-color: #c2410c;
+    }
+
+    .tf-choice-btn.eval-correct {
+      background: var(--success-bg) !important;
+      border-color: var(--success-border) !important;
+      color: var(--success-text) !important;
+    }
+
+    .tf-choice-btn.eval-wrong {
+      background: var(--error-bg) !important;
+      border-color: var(--error-border) !important;
+      color: var(--error-text) !important;
+    }
+
+    /* Feedback box */
+    .feedback-box {
+      margin: 16px 0;
+      padding: 16px 20px;
+      border-radius: 10px;
+      background: #eff6ff;
+      border-left: 5px solid var(--accent);
+      display: none;
+    }
+
+    .feedback-box.show {
+      display: block;
+    }
+
+    /* Action bar */
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      touch-action: manipulation;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-light);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .btn-check {
+      background: #d97706;
+      color: #fff;
+    }
+
+    .btn-check:hover {
+      background: #b45309;
+    }
+
+    .backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 85;
+    }
+
+    /* Mobile */
+    @media (max-width: 1024px) {
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: var(--header-h);
+        bottom: 0;
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .backdrop.open {
+        display: block;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .main-viewport { padding: 12px; }
+      .card { padding: 16px; }
+      .stem { font-size: 1.1rem; }
+      .opt-btn { padding: 10px 14px; font-size: 0.95rem; }
+      .tf-desc { display: block; border-right: 1px solid var(--border); border-bottom-left-radius: 0; border-top-right-radius: 10px; }
+      .tf-btns { display: block; border-left: 1px solid var(--border); border-top: none; border-top-right-radius: 0; border-bottom-left-radius: 10px; width: 100%; text-align: center; }
+      .q-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <button class="btn-header" id="btn-toggle-menu" onclick="toggleSidebar()">
+        <span>☰ Mục lục</span>
+      </button>
+      <div>
+        <div class="brand-title">TIN HỌC 6 - BÀI 1</div>
+        <div class="brand-sub">Thông tin và Dữ liệu</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button class="btn-header" id="btn-teacher" onclick="toggleTeacherMode()">GV: Hiện đáp án</button>
+      <button class="btn-header" onclick="resetAll()">Làm lại từ đầu</button>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <div class="backdrop" id="backdrop" onclick="toggleSidebar(false)"></div>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <span>Danh sách câu hỏi</span>
+        <button class="btn-header" style="color: var(--text); border:none; background:transparent;" onclick="toggleSidebar(false)">✕</button>
+      </div>
+      <div class="nav-content">
+        <div>
+          <div class="section-title">Phần 1: Trắc nghiệm (24 câu)</div>
+          <div class="q-grid" id="nav-mc"></div>
+        </div>
+        <div>
+          <div class="section-title">Phần 2: Đúng / Sai (4 câu)</div>
+          <div class="q-grid" id="nav-tf"></div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-viewport">
+      <div class="card">
+        <div>
+          <div class="card-top">
+            <span class="badge-type" id="badge-type">Trắc nghiệm 4 lựa chọn</span>
+            <span style="font-weight: 700; color: var(--text-muted);" id="q-index-text">Câu 1 / 28</span>
+          </div>
+
+          <div class="stem" id="q-stem">Nội dung câu hỏi...</div>
+
+          <div id="box-mc" class="options-list"></div>
+          <div id="box-tf"></div>
+
+          <div class="feedback-box" id="feedback-box">
+            <strong>Lời giải chi tiết:</strong>
+            <div id="feedback-text" style="margin-top: 4px;"></div>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-secondary" onclick="prevQuestion()">❮ Trước</button>
+            <button class="btn btn-secondary" onclick="resetCurrentQuestion()">🔄 Làm lại câu này</button>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-check" onclick="checkAnswer()">Kiểm tra</button>
+            <button class="btn btn-primary" onclick="nextQuestion()">Tiếp ❯</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const QUESTIONS = [
+      // 24 Multiple Choice
+      {
+        id: 1, type: "mc",
+        stem: "Những gì đem lại hiểu biết cho con người về thế giới xung quanh và về chính bản thân mình được gọi là gì?",
+        options: [
+          { key: "A", text: "Dữ liệu." },
+          { key: "B", text: "Thông tin." },
+          { key: "C", text: "Vật mang tin." },
+          { key: "D", text: "Giác quan." }
+        ],
+        correct: "B",
+        explanation: "Thông tin là những gì đem lại hiểu biết cho con người về thế giới xung quanh và về chính bản thân mình."
+      },
+      {
+        id: 2, type: "mc",
+        stem: "Thông tin khi được ghi lên vật mang tin sẽ trở thành gì?",
+        options: [
+          { key: "A", text: "Dữ liệu." },
+          { key: "B", text: "Vật mang tin." },
+          { key: "C", text: "Giác quan." },
+          { key: "D", text: "Hành động." }
+        ],
+        correct: "A",
+        explanation: "Thông tin được ghi lên vật mang tin trở thành dữ liệu."
+      },
+      {
+        id: 3, type: "mc",
+        stem: "Dữ liệu được thể hiện dưới những dạng nào sau đây?",
+        options: [
+          { key: "A", text: "Chỉ thể hiện bằng các con số." },
+          { key: "B", text: "Chỉ thể hiện bằng văn bản viết tay." },
+          { key: "C", text: "Các con số, văn bản, hình ảnh và âm thanh." },
+          { key: "D", text: "Ý nghĩ và cảm xúc trong não người." }
+        ],
+        correct: "C",
+        explanation: "Dữ liệu được thể hiện dưới dạng những con số, văn bản, hình ảnh và âm thanh."
+      },
+      {
+        id: 4, type: "mc",
+        stem: "Phương tiện được dùng để lưu trữ và truyền tải thông tin được gọi là gì?",
+        options: [
+          { key: "A", text: "Thông tin." },
+          { key: "B", text: "Dữ liệu." },
+          { key: "C", text: "Giác quan." },
+          { key: "D", text: "Vật mang tin." }
+        ],
+        correct: "D",
+        explanation: "Vật mang tin là phương tiện được dùng để lưu trữ và truyền tải thông tin."
+      },
+      {
+        id: 5, type: "mc",
+        stem: "Vật nào sau đây là một ví dụ về vật mang tin được nêu trong bài học?",
+        options: [
+          { key: "A", text: "Thẻ nhớ." },
+          { key: "B", text: "Không khí." },
+          { key: "C", text: "Nắng ấm." },
+          { key: "D", text: "Suy nghĩ." }
+        ],
+        correct: "A",
+        explanation: "Thẻ nhớ, đĩa CD, giấy viết... là các ví dụ về vật mang tin."
+      },
+      {
+        id: 6, type: "mc",
+        stem: "Trong các vật dưới đây, vật nào là vật mang tin?",
+        options: [
+          { key: "A", text: "Tiếng chim hót." },
+          { key: "B", text: "Đĩa CD." },
+          { key: "C", text: "Ánh nắng mặt trời." },
+          { key: "D", text: "Cảm giác vui mừng." }
+        ],
+        correct: "B",
+        explanation: "Đĩa CD được dùng để chứa dữ liệu, lưu trữ và truyền tải thông tin nên là vật mang tin."
+      },
+      {
+        id: 7, type: "mc",
+        stem: "Những hiểu biết của con người về thế giới xung quanh có được từ đâu?",
+        options: [
+          { key: "A", text: "Tự nhiên có sẵn mà không cần tiếp nhận." },
+          { key: "B", text: "Sự lắng nghe, quan sát và trải nghiệm." },
+          { key: "C", text: "Chỉ có được khi sử dụng máy tính." },
+          { key: "D", text: "Chỉ có được qua xem ti vi." }
+        ],
+        correct: "B",
+        explanation: "Những hiểu biết của chúng ta đều có được từ sự lắng nghe, quan sát và trải nghiệm."
+      },
+      {
+        id: 8, type: "mc",
+        stem: "Khi nhìn thấy đèn giao thông chuyển sang màu xanh và các xe bên chiều đèn đỏ dừng lại, điều bạn Minh biết “có thể qua đường an toàn” được gọi là gì?",
+        options: [
+          { key: "A", text: "Dữ liệu." },
+          { key: "B", text: "Thông tin." },
+          { key: "C", text: "Vật mang tin." },
+          { key: "D", text: "Vật chứa tin." }
+        ],
+        correct: "B",
+        explanation: "Điều Minh biết (có thể qua đường an toàn) là sự hiểu biết hình thành trong đầu, đó chính là thông tin."
+      },
+      {
+        id: 9, type: "mc",
+        stem: "Trong tình huống bạn Minh quan sát cột đèn giao thông trên đường đi học, cột đèn giao thông đóng vai trò là gì?",
+        options: [
+          { key: "A", text: "Thông tin." },
+          { key: "B", text: "Dữ liệu." },
+          { key: "C", text: "Vật mang tin." },
+          { key: "D", text: "Bộ não xử lí." }
+        ],
+        correct: "C",
+        explanation: "Đèn giao thông chứa tín hiệu màu sắc nên được gọi là vật mang tin."
+      },
+      {
+        id: 10, type: "mc",
+        stem: "Khi xem chương trình dự báo thời tiết trên ti vi, các con số, hình ảnh, văn bản và âm thanh phát ra từ ti vi là gì?",
+        options: [
+          { key: "A", text: "Thông tin." },
+          { key: "B", text: "Dữ liệu." },
+          { key: "C", text: "Quyết định." },
+          { key: "D", text: "Suy nghĩ." }
+        ],
+        correct: "B",
+        explanation: "Các con số, văn bản, hình ảnh và âm thanh hiển thị trên ti vi là dữ liệu."
+      },
+      {
+        id: 11, type: "mc",
+        stem: "Bạn An xem dự báo thời tiết và biết được “hôm nay trời nắng”, điều bạn An biết được gọi là gì?",
+        options: [
+          { key: "A", text: "Vật mang tin." },
+          { key: "B", text: "Thông tin." },
+          { key: "C", text: "Dữ liệu số." },
+          { key: "D", text: "Dữ liệu âm thanh." }
+        ],
+        correct: "B",
+        explanation: "Hiểu biết 'hôm nay trời nắng' thu nhận được chính là thông tin."
+      },
+      {
+        id: 12, type: "mc",
+        stem: "Sự hiểu biết mà thông tin đem lại luôn phụ thuộc vào yếu tố nào?",
+        options: [
+          { key: "A", text: "Giá tiền của vật mang tin." },
+          { key: "B", text: "Kích thước của máy tính." },
+          { key: "C", text: "Người tiếp nhận thông tin đó." },
+          { key: "D", text: "Độ dài của văn bản." }
+        ],
+        correct: "C",
+        explanation: "Sự hiểu biết mà thông tin đem lại luôn phụ thuộc vào người tiếp nhận thông tin đó."
+      },
+      {
+        id: 13, type: "mc",
+        stem: "Vì sao bản tin dự báo thời tiết bằng chữ lại không đem lại thông tin cho một em bé 5 tuổi chưa biết đọc?",
+        options: [
+          { key: "A", text: "Vì bản tin đó không chứa dữ liệu." },
+          { key: "B", text: "Vì em bé chưa đọc được nên dữ liệu không có ý nghĩa với em." },
+          { key: "C", text: "Vì bản tin dự báo thời tiết luôn sai." },
+          { key: "D", text: "Vì ti vi không phải là vật mang tin." }
+        ],
+        correct: "B",
+        explanation: "Với em bé 5 tuổi chưa đọc được chữ thì dữ liệu chữ viết không đem lại sự hiểu biết (không có ý nghĩa)."
+      },
+      {
+        id: 14, type: "mc",
+        stem: "Một trung tâm du lịch viết lên tấm bảng gỗ dòng chữ: “Đảo Cò, xuồng máy, 40 000 đ, 35 phút”. Tấm bảng gỗ này được gọi là gì?",
+        options: [
+          { key: "A", text: "Thông tin." },
+          { key: "B", text: "Giác quan." },
+          { key: "C", text: "Vật mang tin." },
+          { key: "D", text: "Hiểu biết." }
+        ],
+        correct: "C",
+        explanation: "Tấm bảng gỗ dùng để chứa các chữ và số nên nó là vật mang tin."
+      },
+      {
+        id: 15, type: "mc",
+        stem: "Các chữ và số “Đảo Cò, xuồng máy, 40 000 đ, 35 phút” được viết trên bảng thông báo là gì?",
+        options: [
+          { key: "A", text: "Dữ liệu." },
+          { key: "B", text: "Thông tin đã xử lí xong." },
+          { key: "C", text: "Vật mang tin." },
+          { key: "D", text: "Giác quan." }
+        ],
+        correct: "A",
+        explanation: "Những con số và dòng chữ viết trên bảng là dữ liệu."
+      },
+      {
+        id: 16, type: "mc",
+        stem: "Bộ phận nào của cơ thể người tiếp nhận các hiện tượng xung quanh và bộ phận nào xử lí để trở thành hiểu biết?",
+        options: [
+          { key: "A", text: "Các giác quan thu nhận, não xử lí." },
+          { key: "B", text: "Não thu nhận, các giác quan xử lí." },
+          { key: "C", text: "Tay chân thu nhận, mắt xử lí." },
+          { key: "D", text: "Mắt thu nhận, tai xử lí." }
+        ],
+        correct: "A",
+        explanation: "Các giác quan của em thu nhận và não xử lí để trở thành những hiểu biết của em."
+      },
+      {
+        id: 17, type: "mc",
+        stem: "Phát biểu nào sau đây nêu đúng về vai trò của thông tin đối với con người?",
+        options: [
+          { key: "A", text: "Con người không cần thông tin trong đời sống hằng ngày." },
+          { key: "B", text: "Mọi hoạt động của con người đều cần đến thông tin." },
+          { key: "C", text: "Thông tin chỉ cần thiết khi chúng ta học tập ở trường." },
+          { key: "D", text: "Thông tin chỉ có tác dụng giải trí." }
+        ],
+        correct: "B",
+        explanation: "Thông tin đem lại hiểu biết cho con người. Mọi hoạt động của con người đều cần đến thông tin."
+      },
+      {
+        id: 18, type: "mc",
+        stem: "Khi nhận được thông tin đúng, con người sẽ nhận được lợi ích gì?",
+        options: [
+          { key: "A", text: "Đưa ra những lựa chọn tốt và hoạt động đạt hiệu quả." },
+          { key: "B", text: "Không cần phải suy nghĩ hay xử lí gì thêm." },
+          { key: "C", text: "Làm cho mọi công việc trở nên phức tạp hơn." },
+          { key: "D", text: "Tự động nhớ hết mọi kiến thức mà không cần học." }
+        ],
+        correct: "A",
+        explanation: "Thông tin đúng giúp con người đưa ra những lựa chọn tốt, giúp cho hoạt động của con người đạt hiệu quả."
+      },
+      {
+        id: 19, type: "mc",
+        stem: "Khi chuẩn bị đi học nhóm, An nghe mẹ bảo “Trời sắp mưa đấy nhé”, An liền quay vào nhà cầm theo chiếc ô. Ví dụ này cho thấy điều gì về thông tin?",
+        options: [
+          { key: "A", text: "Thông tin làm thay đổi hành động của con người." },
+          { key: "B", text: "Thông tin luôn làm con người bị muộn giờ." },
+          { key: "C", text: "Thông tin không có tác dụng gì trong thực tế." },
+          { key: "D", text: "Thông tin chỉ là những con số đo lường." }
+        ],
+        correct: "A",
+        explanation: "Thông tin mẹ báo 'Trời sắp mưa' đã làm An thay đổi hành động (quay vào lấy ô mang theo)."
+      },
+      {
+        id: 20, type: "mc",
+        stem: "Học sinh học bài lịch sử Chiến dịch Điện Biên Phủ biết được tinh thần dũng cảm của quân và dân ta. Điều này minh họa cho đặc điểm nào của thông tin?",
+        options: [
+          { key: "A", text: "Thông tin đem lại hiểu biết cho con người." },
+          { key: "B", text: "Thông tin chỉ tồn tại ở dạng số." },
+          { key: "C", text: "Thông tin luôn được ghi trên đĩa CD." },
+          { key: "D", text: "Thông tin không thể truyền từ người này sang người khác." }
+        ],
+        correct: "A",
+        explanation: "Thông tin từ bài học đem lại cho học sinh sự hiểu biết về lịch sử hào hùng của dân tộc."
+      },
+      {
+        id: 21, type: "mc",
+        stem: "Máy tính thực chất chỉ trực tiếp xử lí cái gì?",
+        options: [
+          { key: "A", text: "Dữ liệu." },
+          { key: "B", text: "Cảm xúc con người." },
+          { key: "C", text: "Tinh thần chiến đấu." },
+          { key: "D", text: "Ý thức xã hội." }
+        ],
+        correct: "A",
+        explanation: "Máy tính chỉ trực tiếp xử lí dữ liệu (dù đôi khi người ta cũng nói là máy tính xử lí thông tin)."
+      },
+      {
+        id: 22, type: "mc",
+        stem: "Trong một bảng thống kê lượng mưa, các con số ghi lượng mưa từng tháng (ví dụ: 43,8; 11,2; 200,7) là gì?",
+        options: [
+          { key: "A", text: "Thông tin." },
+          { key: "B", text: "Dữ liệu." },
+          { key: "C", text: "Vật mang tin." },
+          { key: "D", text: "Dự báo." }
+        ],
+        correct: "B",
+        explanation: "Các con số ghi lại trong bảng là dữ liệu."
+      },
+      {
+        id: 23, type: "mc",
+        stem: "Khi đọc bảng số liệu lượng mưa, bạn học sinh rút ra kết luận: “Tháng 6 thành phố Đà Nẵng ít mưa nhất trong các thành phố”. Kết luận này của bạn là gì?",
+        options: [
+          { key: "A", text: "Dữ liệu số." },
+          { key: "B", text: "Thông tin." },
+          { key: "C", text: "Vật mang tin." },
+          { key: "D", text: "Âm thanh." }
+        ],
+        correct: "B",
+        explanation: "Kết luận rút ra sau khi phân tích dữ liệu là sự hiểu biết của bạn, đó chính là thông tin."
+      },
+      {
+        id: 24, type: "mc",
+        stem: "Khi chuẩn bị cho buổi dã ngoại, việc bạn Dung tìm hiểu thông tin thời tiết giúp ích gì cho bạn?",
+        options: [
+          { key: "A", text: "Biết chọn các trò chơi phù hợp." },
+          { key: "B", text: "Biết chuẩn bị trang phục phù hợp." },
+          { key: "C", text: "Lập danh sách các món ăn nhẹ." },
+          { key: "D", text: "Lập kế hoạch các góc chụp ảnh đẹp." }
+        ],
+        correct: "B",
+        explanation: "Dung tìm thông tin thời tiết để biết nên chuẩn bị trang phục như thế nào cho phù hợp."
+      },
+
+      // 4 True/False
+      {
+        id: 25, type: "tf",
+        stem: "Xét tính Đúng hoặc Sai của các nhận định sau đây về khái niệm thông tin, dữ liệu và vật mang tin:",
+        items: [
+          { key: "a", text: "Thông tin là những gì đem lại hiểu biết cho con người về thế giới xung quanh và về chính bản thân mình.", correct: true },
+          { key: "b", text: "Dữ liệu chỉ có thể tồn tại ở dạng văn bản chữ viết, không thể tồn tại ở dạng âm thanh hay hình ảnh.", correct: false },
+          { key: "c", text: "Vật mang tin là phương tiện được dùng để lưu trữ và truyền tải thông tin.", correct: true },
+          { key: "d", text: "Giấy viết, đĩa CD và thẻ nhớ đều là những ví dụ về vật mang tin.", correct: true }
+        ],
+        explanation: "Ý (b) SAI vì dữ liệu được thể hiện dưới dạng các con số, văn bản, hình ảnh và âm thanh."
+      },
+      {
+        id: 26, type: "tf",
+        stem: "Xét tính Đúng hoặc Sai của các nhận định sau đây về mối quan hệ giữa thông tin và dữ liệu:",
+        items: [
+          { key: "a", text: "Thông tin sau khi được ghi lên vật mang tin sẽ trở thành dữ liệu.", correct: true },
+          { key: "b", text: "Máy tính xử lí dữ liệu nhưng đôi khi người ta cũng gọi là máy tính xử lí thông tin.", correct: true },
+          { key: "c", text: "Cùng một dữ liệu luôn mang lại lượng thông tin và sự hiểu biết giống hệt nhau cho tất cả mọi người ở mọi lứa tuổi.", correct: false },
+          { key: "d", text: "Sự hiểu biết mà thông tin đem lại phụ thuộc vào người tiếp nhận thông tin đó.", correct: true }
+        ],
+        explanation: "Ý (c) SAI vì sự hiểu biết phụ thuộc vào người tiếp nhận (ví dụ em bé 5 tuổi chưa biết đọc thì dữ liệu chữ viết thời tiết không đem lại thông tin)."
+      },
+      {
+        id: 27, type: "tf",
+        stem: "Xét tính Đúng hoặc Sai của các nhận định sau đây về tầm quan trọng và vai trò của thông tin đối với con người:",
+        items: [
+          { key: "a", text: "Thông tin đem lại hiểu biết và mọi hoạt động của con người đều cần đến thông tin.", correct: true },
+          { key: "b", text: "Thông tin đúng đắn giúp con người đưa ra những lựa chọn tốt và làm việc hiệu quả.", correct: true },
+          { key: "c", text: "Thông tin không có khả năng làm thay đổi hành động hay quyết định của con người.", correct: false },
+          { key: "d", text: "Khi nghe tin trời sắp mưa, một người quyết định mang theo ô thì đó là ví dụ cho thấy thông tin đã làm thay đổi hành động.", correct: true }
+        ],
+        explanation: "Ý (c) SAI vì thông tin có khả năng làm thay đổi hành động của con người."
+      },
+      {
+        id: 28, type: "tf",
+        stem: "Trong việc thu nhận và xử lí thông tin của con người và ứng dụng thực tế:",
+        items: [
+          { key: "a", text: "Các giác quan của con người làm nhiệm vụ thu nhận thông tin, sau đó não bộ sẽ xử lí để tạo thành hiểu biết.", correct: true },
+          { key: "b", text: "Dòng chữ ghi trên tờ giấy là vật mang tin, còn bản thân tờ giấy là dữ liệu.", correct: false },
+          { key: "c", text: "Việc biết trước thông tin thời tiết có thể giúp chúng ta lựa chọn thời gian, địa điểm và trang phục du lịch phù hợp.", correct: true },
+          { key: "d", text: "Một tấm bảng chứa các con số và chữ viết thì tấm bảng là vật mang tin, các chữ và số viết trên đó là dữ liệu.", correct: true }
+        ],
+        explanation: "Ý (b) SAI vì tờ giấy là vật mang tin, còn dòng chữ ghi trên tờ giấy là dữ liệu."
+      }
+    ];
+
+    let currentIdx = 0;
+    let userAnswers = {};
+    let isTeacher = false;
+
+    function init() {
+      loadState();
+      renderSidebar();
+      renderQuestion();
+    }
+
+    function toggleSidebar(force) {
+      const sb = document.getElementById("sidebar");
+      const bd = document.getElementById("backdrop");
+      const open = force !== undefined ? force : !sb.classList.contains("open");
+      sb.classList.toggle("open", open);
+      bd.classList.toggle("open", open);
+    }
+
+    function toggleTeacherMode() {
+      isTeacher = !isTeacher;
+      const btn = document.getElementById("btn-teacher");
+      btn.textContent = isTeacher ? "GV: Đang hiện đáp án" : "GV: Hiện đáp án";
+      btn.classList.toggle("active", isTeacher);
+      renderQuestion();
+    }
+
+    function renderSidebar() {
+      const mcNav = document.getElementById("nav-mc");
+      const tfNav = document.getElementById("nav-tf");
+      mcNav.innerHTML = "";
+      tfNav.innerHTML = "";
+
+      QUESTIONS.forEach((q, idx) => {
+        const b = document.createElement("button");
+        b.className = "q-btn" + (idx === currentIdx ? " active" : "");
+        b.id = `btn-q-${q.id}`;
+        b.textContent = q.id;
+        b.onclick = () => {
+          currentIdx = idx;
+          renderQuestion();
+          if (window.innerWidth <= 1024) toggleSidebar(false);
+        };
+
+        if (q.type === "mc") mcNav.appendChild(b);
+        else tfNav.appendChild(b);
+      });
+      updateSidebarStatus();
+    }
+
+    function updateSidebarStatus() {
+      QUESTIONS.forEach((q, idx) => {
+        const b = document.getElementById(`btn-q-${q.id}`);
+        if (!b) return;
+        b.classList.remove("active", "correct", "incorrect", "partial");
+        if (idx === currentIdx) b.classList.add("active");
+
+        const ans = userAnswers[q.id];
+        if (ans && ans.checked) {
+          if (q.type === "mc") {
+            b.classList.add(ans.isCorrect ? "correct" : "incorrect");
+          } else if (q.type === "tf") {
+            const allCorrect = q.items.every(item => ans.choices && ans.choices[item.key] === item.correct);
+            b.classList.add(allCorrect ? "correct" : "partial");
+          }
+        }
+      });
+    }
+
+    function renderQuestion() {
+      const q = QUESTIONS[currentIdx];
+      document.getElementById("badge-type").textContent = q.type === "mc" ? "Trắc nghiệm 4 lựa chọn" : "Trắc nghiệm Đúng / Sai";
+      document.getElementById("q-index-text").textContent = `Câu ${q.id} / ${QUESTIONS.length}`;
+      document.getElementById("q-stem").textContent = q.stem;
+
+      const boxMc = document.getElementById("box-mc");
+      const boxTf = document.getElementById("box-tf");
+      const fBox = document.getElementById("feedback-box");
+      const fText = document.getElementById("feedback-text");
+
+      boxMc.style.display = "none";
+      boxTf.style.display = "none";
+
+      const ans = userAnswers[q.id] || {};
+
+      if (q.type === "mc") {
+        boxMc.style.display = "flex";
+        boxMc.innerHTML = "";
+        q.options.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.className = "opt-btn";
+          btn.innerHTML = `<span class="opt-tag">${opt.key}</span> <span>${opt.text}</span>`;
+          if (ans.selected === opt.key) btn.classList.add("selected");
+
+          if (ans.checked || isTeacher) {
+            if (opt.key === q.correct) btn.classList.add("correct");
+            else if (ans.selected === opt.key && opt.key !== q.correct) btn.classList.add("incorrect");
+          }
+
+          btn.onclick = () => {
+            if (!userAnswers[q.id]) userAnswers[q.id] = {};
+            userAnswers[q.id].selected = opt.key;
+            userAnswers[q.id].checked = false;
+            renderQuestion();
+          };
+          boxMc.appendChild(btn);
+        });
+      } else if (q.type === "tf") {
+        boxTf.style.display = "block";
+        let html = '<table class="tf-table"><tbody>';
+        q.items.forEach(item => {
+          const choice = ans.choices ? ans.choices[item.key] : undefined;
+          const evaluated = ans.checked || isTeacher;
+
+          let btnT = "tf-choice-btn";
+          let btnF = "tf-choice-btn";
+
+          if (choice === true) btnT += " selected-t";
+          if (choice === false) btnF += " selected-f";
+
+          if (evaluated) {
+            if (item.correct === true) btnT += " eval-correct";
+            else btnF += " eval-correct";
+
+            if (choice === true && item.correct === false) btnT += " eval-wrong";
+            if (choice === false && item.correct === true) btnF += " eval-wrong";
+          }
+
+          html += `
+            <tr class="tf-row">
+              <td class="tf-desc"><strong>${item.key.toUpperCase()}.</strong> ${item.text}</td>
+              <td class="tf-btns">
+                <button class="${btnT}" onclick="setTfChoice(${q.id}, '${item.key}', true)">Đúng</button>
+                <button class="${btnF}" onclick="setTfChoice(${q.id}, '${item.key}', false)">Sai</button>
+              </td>
+            </tr>
+          `;
+        });
+        html += '</tbody></table>';
+        boxTf.innerHTML = html;
+      }
+
+      if (ans.checked || isTeacher) {
+        fBox.classList.add("show");
+        fText.textContent = q.explanation;
+      } else {
+        fBox.classList.remove("show");
+      }
+
+      updateSidebarStatus();
+      saveState();
+    }
+
+    function setTfChoice(qId, key, val) {
+      if (!userAnswers[qId]) userAnswers[qId] = { choices: {} };
+      if (!userAnswers[qId].choices) userAnswers[qId].choices = {};
+      userAnswers[qId].choices[key] = val;
+      userAnswers[qId].checked = false;
+      renderQuestion();
+    }
+
+    function checkAnswer() {
+      const q = QUESTIONS[currentIdx];
+      if (!userAnswers[q.id]) userAnswers[q.id] = {};
+      const ans = userAnswers[q.id];
+
+      if (q.type === "mc") {
+        if (!ans.selected) {
+          alert("Em hãy chọn một đáp án trước khi kiểm tra nhé!");
+          return;
+        }
+        ans.checked = true;
+        ans.isCorrect = (ans.selected === q.correct);
+      } else if (q.type === "tf") {
+        if (!ans.choices || Object.keys(ans.choices).length < 4) {
+          alert("Em hãy chọn Đúng hoặc Sai cho đủ 4 nhận định nhé!");
+          return;
+        }
+        ans.checked = true;
+      }
+      renderQuestion();
+    }
+
+    function resetCurrentQuestion() {
+      const q = QUESTIONS[currentIdx];
+      delete userAnswers[q.id];
+      renderQuestion();
+    }
+
+    function resetAll() {
+      if (confirm("Em có chắc chắn muốn làm lại toàn bộ bài từ đầu không?")) {
+        userAnswers = {};
+        currentIdx = 0;
+        localStorage.removeItem("TIN6_BAI1_STATE");
+        renderQuestion();
+        renderSidebar();
+      }
+    }
+
+    function nextQuestion() {
+      if (currentIdx < QUESTIONS.length - 1) {
+        currentIdx++;
+        renderQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentIdx > 0) {
+        currentIdx--;
+        renderQuestion();
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem("TIN6_BAI1_STATE", JSON.stringify({ currentIdx, userAnswers }));
+      } catch (e) {}
+    }
+
+    function loadState() {
+      try {
+        const saved = localStorage.getItem("TIN6_BAI1_STATE");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          currentIdx = parsed.currentIdx || 0;
+          userAnswers = parsed.userAnswers || {};
+        }
+      } catch (e) {}
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") nextQuestion();
+      if (e.key === "ArrowLeft") prevQuestion();
+    });
+
+    window.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
