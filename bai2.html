@@ -6,8 +6,8 @@
   <title>BÀI 2: XỬ LÍ THÔNG TIN</title>
   <style>
     :root {
-      --primary: #1e3a8a;
-      --primary-light: #2563eb;
+      --primary: #0f766e;
+      --primary-light: #0d9488;
       --accent: #f59e0b;
       --success: #10b981;
       --danger: #ef4444;
@@ -20,9 +20,9 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
     body { background-color: var(--bg); color: var(--text); padding-bottom: 40px; }
 
-    /* Header siêu mỏng 1 dòng */
+    /* Header siêu mỏng 1 dòng màu xanh ngọc */
     header {
-      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      background: linear-gradient(135deg, #0f766e, #14b8a6);
       color: white;
       padding: 6px 16px;
       text-align: center;
@@ -88,7 +88,7 @@
       color: #334155;
       transition: all 0.2s;
     }
-    .palette-item:hover { border-color: var(--primary-light); background: #eff6ff; }
+    .palette-item:hover { border-color: var(--primary-light); background: #ccfbf1; }
     
     /* Trạng thái danh sách */
     .palette-item.current {
@@ -169,7 +169,7 @@
       border-bottom: 1.5px solid #f1f5f9;
     }
     .q-badge {
-      background: #e0e7ff;
+      background: #ccfbf1;
       color: var(--primary);
       font-weight: 700;
       padding: 4px 10px;
@@ -203,8 +203,8 @@
       color: #334155;
       transition: all 0.15s;
     }
-    .opt-btn:hover:not(.disabled) { border-color: var(--primary-light); background: #eff6ff; }
-    .opt-btn.selected { border-color: var(--primary); background: #dbeafe; font-weight: 600; }
+    .opt-btn:hover:not(.disabled) { border-color: var(--primary-light); background: #f0fdfa; }
+    .opt-btn.selected { border-color: var(--primary); background: #ccfbf1; font-weight: 600; color: #0f766e; }
     
     /* Result states */
     .opt-btn.correct-ans { background: #dcfce7 !important; border-color: var(--success) !important; color: #166534 !important; font-weight: bold; }
@@ -350,7 +350,6 @@
 
     // NGÂN HÀNG 28 CÂU HỎI BÀI 2 (24 MCQ + 4 TF)
     const questions = [
-      // 24 Câu MCQ
       { id: 1, type: 'mcq', title: 'Quá trình xử lí thông tin của con người bao gồm mấy hoạt động cơ bản?', opts: ['A. 2 hoạt động', 'B. 3 hoạt động', 'C. 4 hoạt động', 'D. 5 hoạt động'], ans: 2 },
       { id: 2, type: 'mcq', title: 'Thứ tự các hoạt động trong quá trình xử lí thông tin của con người là:', opts: ['A. Thu nhận → Lưu trữ → Xử lí → Truyền thông tin', 'B. Lưu trữ → Thu nhận → Xử lí → Truyền thông tin', 'C. Xử lí → Thu nhận → Lưu trữ → Truyền thông tin', 'D. Thu nhận → Truyền thông tin → Lưu trữ → Xử lí'], ans: 0 },
       { id: 3, type: 'mcq', title: 'Con người thu nhận thông tin của thế giới bên ngoài thông qua phương tiện nào?', opts: ['A. Bộ nhớ máy tính', 'B. Các giác quan (mắt, tai, mũi, lưỡi, da)', 'C. Các thiết bị lưu trữ quang học', 'D. Cáp truyền dẫn tín hiệu'], ans: 1 },
@@ -375,8 +374,6 @@
       { id: 22, type: 'mcq', title: 'Nhờ vào khả năng nào máy tính giúp con người kết nối với kho tri thức khổng lồ toàn cầu?', opts: ['A. Khả năng in màu sắc nét', 'B. Khả năng kết nối mạng Internet', 'C. Vỏ máy tính làm bằng kim loại bền', 'D. Bàn phím có nhiều phím bấm'], ans: 1 },
       { id: 23, type: 'mcq', title: 'Khi em chụp một bức ảnh bằng điện thoại thông minh, điện thoại đang thực hiện hoạt động gì?', opts: ['A. Thu nhận và lưu trữ thông tin dạng hình ảnh', 'B. Chỉ thực hiện truyền thông tin', 'C. Chỉ thực hiện phép toán cộng trừ', 'D. Xóa dữ liệu quang học'], ans: 0 },
       { id: 24, type: 'mcq', title: 'Máy tính có thể tính được gần đúng số Pi với bao nhiêu chữ số ở phần thập phân?', opts: ['A. Vài chục chữ số', 'B. Vài trăm chữ số', 'C. Hàng nghìn tỉ chữ số', 'D. Đúng tuyệt đối vô hạn chữ số'], ans: 2 },
-
-      // 4 Câu Đúng / Sai (TF)
       { id: 25, type: 'tf', title: 'Câu 25 (Đ/S): "Bộ nhớ của máy tính (ổ cứng, thẻ nhớ, đĩa quang) chính là các vật mang tin."', opts: ['ĐÚNG', 'SAI'], ans: 0 },
       { id: 26, type: 'tf', title: 'Câu 26 (Đ/S): "Khi làm một phép tính nhẩm trong đầu, bộ não của con người đang thực hiện hoạt động xử lí thông tin."', opts: ['ĐÚNG', 'SAI'], ans: 0 },
       { id: 27, type: 'tf', title: 'Câu 27 (Đ/S): "Máy tính có thể tự động xử lí mọi bài toán phức tạp mà không cần chương trình do con người viết ra."', opts: ['ĐÚNG', 'SAI'], ans: 1 },
