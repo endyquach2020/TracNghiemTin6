@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BÀI 2: XỬ LÍ THÔNG TIN</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #2563eb;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 40px; }
+
+    /* Header siêu mỏng 1 dòng */
+    header {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: white;
+      padding: 6px 16px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    header h1 { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px; }
+
+    /* Layout */
+    .layout-wrapper {
+      max-width: 1100px;
+      margin: 12px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 850px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Sidebar */
+    .sidebar {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 12px;
+    }
+    .sidebar-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .palette-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 36px;
+      border-radius: 6px;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #334155;
+      transition: all 0.2s;
+    }
+    .palette-item:hover { border-color: var(--primary-light); background: #eff6ff; }
+    
+    /* Trạng thái danh sách */
+    .palette-item.current {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .palette-item.answered {
+      background-color: var(--primary-light);
+      border-color: var(--primary);
+      color: white;
+      font-weight: bold;
+    }
+    .palette-item.correct {
+      background-color: var(--success) !important;
+      border-color: #059669 !important;
+      color: white !important;
+    }
+    .palette-item.wrong {
+      background-color: var(--danger) !important;
+      border-color: #b91c1c !important;
+      color: white !important;
+    }
+
+    .palette-legend {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .legend-item { display: flex; align-items: center; gap: 8px; }
+    .legend-box { width: 14px; height: 14px; border-radius: 4px; border: 1px solid #cbd5e1; }
+
+    /* Content Area */
+    .content-area {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Result Banner */
+    .result-banner {
+      display: none;
+      background: #f0fdf4;
+      border: 2px solid var(--success);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      animation: fadeIn 0.4s ease;
+    }
+    .result-score { font-size: 2.2rem; font-weight: 800; color: #166534; }
+    .result-text { font-size: 1.05rem; color: #15803d; margin-top: 4px; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Quiz Card */
+    .question-box {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid #f1f5f9;
+    }
+    .q-badge {
+      background: #e0e7ff;
+      color: var(--primary);
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .q-type { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+
+    .q-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .q-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .opt-btn {
+      text-align: left;
+      padding: 12px 16px;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: #334155;
+      transition: all 0.15s;
+    }
+    .opt-btn:hover:not(.disabled) { border-color: var(--primary-light); background: #eff6ff; }
+    .opt-btn.selected { border-color: var(--primary); background: #dbeafe; font-weight: 600; }
+    
+    /* Result states */
+    .opt-btn.correct-ans { background: #dcfce7 !important; border-color: var(--success) !important; color: #166534 !important; font-weight: bold; }
+    .opt-btn.wrong-ans { background: #fee2e2 !important; border-color: var(--danger) !important; color: #991b1b !important; }
+
+    /* Navigation Buttons */
+    .nav-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+      gap: 12px;
+    }
+    .btn-nav {
+      background: #ffffff;
+      color: var(--primary);
+      border: 1.5px solid var(--primary-light);
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-nav:hover:not(:disabled) { background: var(--primary-light); color: white; }
+    .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; border-color: #cbd5e1; color: var(--text-muted); }
+
+    .btn-action-container {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-submit {
+      background: var(--success); color: white; border: none;
+      padding: 12px 32px; font-size: 1.05rem; font-weight: 700;
+      border-radius: 8px; cursor: pointer; transition: 0.2s;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+    }
+    .btn-submit:hover { background: #059669; }
+    .btn-reset {
+      background: #64748b; color: white; border: none;
+      padding: 12px 24px; font-size: 1.05rem; font-weight: 600;
+      border-radius: 8px; cursor: pointer; transition: 0.2s;
+    }
+    .btn-reset:hover { background: #475569; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>BÀI 2: XỬ LÍ THÔNG TIN</h1>
+  </header>
+
+  <div class="layout-wrapper">
+    
+    <!-- CỘT BẢNG SỐ CÂU (BÊN TRÁI) -->
+    <div class="sidebar">
+      <div class="sidebar-title">
+        <span>Bảng câu hỏi</span>
+        <span style="font-size:0.85rem; font-weight:normal;" id="answeredCount">0/28 đã làm</span>
+      </div>
+      <div class="palette-grid" id="paletteGrid">
+        <!-- Tự động sinh ra 28 ô câu hỏi qua JS -->
+      </div>
+      <div class="palette-legend">
+        <div class="legend-item"><div class="legend-box" style="background:#f8fafc;"></div> Chưa làm</div>
+        <div class="legend-item"><div class="legend-box" style="background:var(--primary-light);"></div> Đã chọn đáp án</div>
+        <div class="legend-item"><div class="legend-box" style="background:var(--success);"></div> Câu trả lời đúng</div>
+        <div class="legend-item"><div class="legend-box" style="background:var(--danger);"></div> Câu trả lời sai</div>
+      </div>
+    </div>
+
+    <!-- KHU VỰC LÀM BÀI 1 CÂU (BÊN PHẢI) -->
+    <div class="content-area">
+
+      <!-- Bảng kết quả sau nộp -->
+      <div id="resultBanner" class="result-banner">
+        <h2>🎉 KẾT QUẢ BÀI THI</h2>
+        <div class="result-score"><span id="finalScore">0</span> / 280</div>
+        <p class="result-text" id="feedbackGrade">Đã hoàn thành chấm bài!</p>
+      </div>
+
+      <!-- Khung câu hỏi hiện tại -->
+      <div class="question-box">
+        <div>
+          <div class="q-header">
+            <span class="q-badge" id="qBadge">Câu 1 / 28</span>
+            <span class="q-type" id="qType">Trắc nghiệm 4 lựa chọn</span>
+          </div>
+          <div class="q-title" id="qTitle">Nội dung câu hỏi...</div>
+          <div class="q-options" id="qOptions">
+            <!-- Tự động kết xuất các lựa chọn -->
+          </div>
+        </div>
+
+        <!-- Nút tới / lui -->
+        <div class="nav-controls">
+          <button class="btn-nav" id="btnPrev" onclick="navigateQ(-1)">⬅️ Câu trước</button>
+          <span style="font-size:0.9rem; color:var(--text-muted); font-weight:600;" id="qIndicator">1 / 28</span>
+          <button class="btn-nav" id="btnNext" onclick="navigateQ(1)">Câu sau ➡️</button>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="btn-action-container">
+        <button class="btn-submit" onclick="submitAssessment()">🚀 NỘP BÀI & CHẤM ĐIỂM</button>
+        <button class="btn-reset" onclick="resetAssessment()">🔄 LÀM LẠI BÀI THI</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Audio synthesis without external audio files
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSound(type) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'success') {
+        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(554.37, audioCtx.currentTime + 0.1);
+        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.5);
+      } else {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      }
+    }
+
+    // NGÂN HÀNG 28 CÂU HỎI BÀI 2 (24 MCQ + 4 TF)
+    const questions = [
+      // 24 Câu MCQ
+      { id: 1, type: 'mcq', title: 'Quá trình xử lí thông tin của con người bao gồm mấy hoạt động cơ bản?', opts: ['A. 2 hoạt động', 'B. 3 hoạt động', 'C. 4 hoạt động', 'D. 5 hoạt động'], ans: 2 },
+      { id: 2, type: 'mcq', title: 'Thứ tự các hoạt động trong quá trình xử lí thông tin của con người là:', opts: ['A. Thu nhận → Lưu trữ → Xử lí → Truyền thông tin', 'B. Lưu trữ → Thu nhận → Xử lí → Truyền thông tin', 'C. Xử lí → Thu nhận → Lưu trữ → Truyền thông tin', 'D. Thu nhận → Truyền thông tin → Lưu trữ → Xử lí'], ans: 0 },
+      { id: 3, type: 'mcq', title: 'Con người thu nhận thông tin của thế giới bên ngoài thông qua phương tiện nào?', opts: ['A. Bộ nhớ máy tính', 'B. Các giác quan (mắt, tai, mũi, lưỡi, da)', 'C. Các thiết bị lưu trữ quang học', 'D. Cáp truyền dẫn tín hiệu'], ans: 1 },
+      { id: 4, type: 'mcq', title: 'Hoạt động nào sau đây thuộc hoạt động "Lưu trữ thông tin"?', opts: ['A. Nhìn thấy biển báo giao thông', 'B. Chép nội dung bài học vào vở', 'C. Suy nghĩ giải bài toán khó', 'D. Phát biểu ý kiến trước lớp'], ans: 1 },
+      { id: 5, type: 'mcq', title: 'Quá trình bộ não so sánh, phân tích, suy luận và biến đổi thông tin ban đầu thành thông tin mới gọi là gì?', opts: ['A. Thu nhận thông tin', 'B. Lưu trữ thông tin', 'C. Xử lí thông tin', 'D. Truyền thông tin'], ans: 2 },
+      { id: 6, type: 'mcq', title: 'Hoạt động "Em đang nghe chương trình ca nhạc trên Đài Tiếng nói Việt Nam" thuộc hoạt động nào?', opts: ['A. Thu nhận thông tin', 'B. Lưu trữ thông tin', 'C. Xử lí thông tin', 'D. Biến đổi dữ liệu'], ans: 0 },
+      { id: 7, type: 'mcq', title: 'Hoạt động "Em thực hiện một phép tính nhẩm trong đầu" thuộc hoạt động nào?', opts: ['A. Thu nhận thông tin', 'B. Xử lí thông tin', 'C. Truyền thông tin', 'D. Xóa dữ liệu'], ans: 1 },
+      { id: 8, type: 'mcq', title: 'Máy tính gồm mấy thành phần chính để thực hiện quá trình xử lí thông tin?', opts: ['A. 3 thành phần', 'B. 4 thành phần', 'C. 5 thành phần', 'D. 6 thành phần'], ans: 1 },
+      { id: 9, type: 'mcq', title: 'Trong máy tính, thành phần nào có chức năng thu nhận thông tin (thiết bị vào)?', opts: ['A. Màn hình, máy in', 'B. Bàn phím, chuột, máy quét', 'C. Ổ đĩa cứng, thẻ nhớ', 'D. Bộ xử lí CPU'], ans: 1 },
+      { id: 10, type: 'mcq', title: 'Trong máy tính, thành phần nào thực hiện chức năng lưu trữ thông tin?', opts: ['A. Bộ xử lí (CPU)', 'B. Bộ nhớ (ổ cứng, thẻ nhớ, đĩa quang)', 'C. Chuột máy tính', 'D. Màn hình'], ans: 1 },
+      { id: 11, type: 'mcq', title: 'Bộ phận nào đóng vai trò là "bộ não" thực hiện xử lí thông tin trong máy tính?', opts: ['A. Bàn phím', 'B. Bộ xử lí (CPU)', 'C. Màn hình', 'D. Bộ nguồn điện'], ans: 1 },
+      { id: 12, type: 'mcq', title: 'Thiết bị nào sau đây thực hiện chức năng truyền hoặc chia sẻ thông tin (thiết bị ra)?', opts: ['A. Máy quét (Scanner)', 'B. Màn hình và máy in', 'C. Bàn phím', 'D. Chuột cảm ứng'], ans: 1 },
+      { id: 13, type: 'mcq', title: 'Khi cầu thủ sút phạt đền, mắt theo dõi vị trí thủ môn thuộc hoạt động nào?', opts: ['A. Thu nhận thông tin', 'B. Lưu trữ thông tin', 'C. Xử lí thông tin', 'D. Truyền thông tin'], ans: 0 },
+      { id: 14, type: 'mcq', title: 'Bộ não điều khiển cơ bắp chân thực hiện cú sút phạt chính xác thuộc hoạt động nào?', opts: ['A. Thu nhận thông tin', 'B. Lưu trữ dữ liệu', 'C. Truyền thông tin (chuyển hoá thành hành vi)', 'D. Xóa bỏ thông tin'], ans: 2 },
+      { id: 15, type: 'mcq', title: 'Vật mang tin xuất hiện rõ ràng nhất trong hoạt động nào của quá trình xử lí thông tin?', opts: ['A. Chỉ trong hoạt động ra lệnh', 'B. Hoạt động lưu trữ thông tin', 'C. Chỉ trong suy nghĩ tức thời', 'D. Không xuất hiện trong hoạt động nào'], ans: 1 },
+      { id: 16, type: 'mcq', title: 'Khả năng nào sau đây thể hiện ưu thế vượt trội của máy tính trong xử lí thông tin?', opts: ['A. Tự có cảm xúc vui buồn khi tính toán', 'B. Thực hiện hàng trăm tỉ phép tính trong một giây với độ chính xác cao', 'C. Tự động đưa ra quyết định mà không cần phần mềm', 'D. Không cần nguồn điện vẫn hoạt động bền bỉ'], ans: 1 },
+      { id: 17, type: 'mcq', title: 'Thiết bị lưu trữ nhỏ bằng đầu ngón tay nhưng có thể chứa nội dung hàng nghìn cuốn sách là:', opts: ['A. Bàn phím máy tính', 'B. Thẻ nhớ', 'C. Chuột máy tính', 'D. Máy in'], ans: 1 },
+      { id: 18, type: 'mcq', title: 'Công việc "Chuyển thể một bài văn xuôi thành bài thơ văn vần" thuộc hoạt động nào?', opts: ['A. Thu nhận thông tin', 'B. Xử lí thông tin', 'C. Lưu trữ dữ liệu đơn thuần', 'D. Quét ảnh'], ans: 1 },
+      { id: 19, type: 'mcq', title: 'Công việc "Thuyết trình chủ đề tình bạn trước toàn trường" thuộc hoạt động nào?', opts: ['A. Thu nhận thông tin', 'B. Truyền thông tin', 'C. Lưu trữ thông tin', 'D. Mã hoá dữ liệu'], ans: 1 },
+      { id: 20, type: 'mcq', title: 'Ứng dụng của máy tính trong việc lưu trữ bệnh án điện tử và hỗ trợ chẩn đoán thuộc lĩnh vực nào?', opts: ['A. Nông nghiệp', 'B. Y tế', 'C. Hội hoạ', 'D. Du lịch'], ans: 1 },
+      { id: 21, type: 'mcq', title: 'Điều gì sẽ xảy ra nếu sau khi thu nhận thông tin, bộ não không thể ghi nhớ (lưu trữ)?', opts: ['A. Bộ não xử lý nhanh hơn bình thường', 'B. Thông tin bị mất và không thể thực hiện các thao tác xử lý tiếp theo', 'C. Thông tin tự động nhân đôi trong não', 'D. Giúp cơ thể tiết kiệm năng lượng'], ans: 1 },
+      { id: 22, type: 'mcq', title: 'Nhờ vào khả năng nào máy tính giúp con người kết nối với kho tri thức khổng lồ toàn cầu?', opts: ['A. Khả năng in màu sắc nét', 'B. Khả năng kết nối mạng Internet', 'C. Vỏ máy tính làm bằng kim loại bền', 'D. Bàn phím có nhiều phím bấm'], ans: 1 },
+      { id: 23, type: 'mcq', title: 'Khi em chụp một bức ảnh bằng điện thoại thông minh, điện thoại đang thực hiện hoạt động gì?', opts: ['A. Thu nhận và lưu trữ thông tin dạng hình ảnh', 'B. Chỉ thực hiện truyền thông tin', 'C. Chỉ thực hiện phép toán cộng trừ', 'D. Xóa dữ liệu quang học'], ans: 0 },
+      { id: 24, type: 'mcq', title: 'Máy tính có thể tính được gần đúng số Pi với bao nhiêu chữ số ở phần thập phân?', opts: ['A. Vài chục chữ số', 'B. Vài trăm chữ số', 'C. Hàng nghìn tỉ chữ số', 'D. Đúng tuyệt đối vô hạn chữ số'], ans: 2 },
+
+      // 4 Câu Đúng / Sai (TF)
+      { id: 25, type: 'tf', title: 'Câu 25 (Đ/S): "Bộ nhớ của máy tính (ổ cứng, thẻ nhớ, đĩa quang) chính là các vật mang tin."', opts: ['ĐÚNG', 'SAI'], ans: 0 },
+      { id: 26, type: 'tf', title: 'Câu 26 (Đ/S): "Khi làm một phép tính nhẩm trong đầu, bộ não của con người đang thực hiện hoạt động xử lí thông tin."', opts: ['ĐÚNG', 'SAI'], ans: 0 },
+      { id: 27, type: 'tf', title: 'Câu 27 (Đ/S): "Máy tính có thể tự động xử lí mọi bài toán phức tạp mà không cần chương trình do con người viết ra."', opts: ['ĐÚNG', 'SAI'], ans: 1 },
+      { id: 28, type: 'tf', title: 'Câu 28 (Đ/S): "Thông tin khi được truyền đạt và chia sẻ với người khác sẽ bị mất đi ở người truyền."', opts: ['ĐÚNG', 'SAI'], ans: 1 }
+    ];
+
+    let currentQIdx = 0;
+    let userAnswers = {};
+    let isSubmitted = false;
+
+    function initQuiz() {
+      const palette = document.getElementById('paletteGrid');
+      palette.innerHTML = '';
+      
+      questions.forEach((q, idx) => {
+        const item = document.createElement('div');
+        item.className = 'palette-item' + (idx === 0 ? ' current' : '');
+        item.id = `pal-${idx}`;
+        item.innerText = idx < 24 ? (idx + 1) : `${idx + 1}*`;
+        item.title = `Chuyển tới câu ${idx + 1}`;
+        item.onclick = () => jumpToQ(idx);
+        palette.appendChild(item);
+      });
+
+      renderQuestion(0);
+      updateStatusCount();
+    }
+
+    function renderQuestion(idx) {
+      currentQIdx = idx;
+      const q = questions[idx];
+
+      document.getElementById('qBadge').innerText = `Câu ${idx + 1} / 28`;
+      document.getElementById('qType').innerText = q.type === 'mcq' ? 'Trắc nghiệm 4 lựa chọn' : 'Trắc nghiệm Đúng / Sai';
+      document.getElementById('qTitle').innerText = q.title;
+      document.getElementById('qIndicator').innerText = `${idx + 1} / 28`;
+
+      document.getElementById('btnPrev').disabled = (idx === 0);
+      document.getElementById('btnNext').disabled = (idx === questions.length - 1);
+
+      document.querySelectorAll('.palette-item').forEach((p, i) => {
+        if (i === idx) p.classList.add('current');
+        else p.classList.remove('current');
+      });
+
+      const optContainer = document.getElementById('qOptions');
+      optContainer.innerHTML = '';
+
+      q.opts.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = optText;
+
+        if (userAnswers[idx] === optIdx) {
+          btn.classList.add('selected');
+        }
+
+        if (isSubmitted) {
+          btn.classList.add('disabled');
+          if (optIdx === q.ans) {
+            btn.classList.add('correct-ans');
+          } else if (userAnswers[idx] === optIdx) {
+            btn.classList.add('wrong-ans');
+          }
+        } else {
+          btn.onclick = () => selectOption(idx, optIdx);
+        }
+
+        optContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(qIdx, optIdx) {
+      if (isSubmitted) return;
+      userAnswers[qIdx] = optIdx;
+      
+      document.getElementById(`pal-${qIdx}`).classList.add('answered');
+      renderQuestion(qIdx);
+      updateStatusCount();
+    }
+
+    function navigateQ(step) {
+      const newIdx = currentQIdx + step;
+      if (newIdx >= 0 && newIdx < questions.length) {
+        renderQuestion(newIdx);
+      }
+    }
+
+    function jumpToQ(idx) {
+      renderQuestion(idx);
+    }
+
+    function updateStatusCount() {
+      const count = Object.keys(userAnswers).length;
+      document.getElementById('answeredCount').innerText = `${count}/28 đã làm`;
+    }
+
+    function submitAssessment() {
+      if (isSubmitted) {
+        alert('Bạn đã nộp bài rồi! Bấm "Làm lại bài thi" nếu muốn thực hành lại.');
+        return;
+      }
+
+      const totalAnswered = Object.keys(userAnswers).length;
+      if (totalAnswered < questions.length) {
+        const confirmSubmit = confirm(`Bạn mới trả lời ${totalAnswered}/${questions.length} câu. Bạn có chắc chắn muốn nộp bài không?`);
+        if (!confirmSubmit) return;
+      }
+
+      isSubmitted = true;
+      let score = 0;
+
+      questions.forEach((q, idx) => {
+        const pal = document.getElementById(`pal-${idx}`);
+        pal.classList.remove('answered');
+
+        if (userAnswers[idx] === q.ans) {
+          score += 10;
+          pal.classList.add('correct');
+        } else {
+          pal.classList.add('wrong');
+        }
+      });
+
+      const banner = document.getElementById('resultBanner');
+      const scoreElem = document.getElementById('finalScore');
+      const gradeElem = document.getElementById('feedbackGrade');
+      scoreElem.innerText = score;
+      
+      if (score >= 240) {
+        gradeElem.innerText = '🌟 Xuất sắc! Em đã nắm rất vững toàn bộ 28 câu kiến thức Xử lí thông tin!';
+      } else if (score >= 180) {
+        gradeElem.innerText = '👍 Khá tốt! Em hãy bấm lại các câu màu đỏ trên danh sách để xem lại kiến thức!';
+      } else {
+        gradeElem.innerText = '📖 Cần cố gắng hơn! Em hãy xem lại nội dung Bài 2 và bấm làm lại bài thi.';
+      }
+
+      banner.style.display = 'block';
+      renderQuestion(currentQIdx);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (score >= 180) {
+        playSound('success');
+      } else {
+        playSound('error');
+      }
+    }
+
+    function resetAssessment() {
+      userAnswers = {};
+      isSubmitted = false;
+      document.getElementById('resultBanner').style.display = 'none';
+      
+      initQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onload = initQuiz;
+  </script>
+</body>
+</html>
