@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BÀI 3: THÔNG TIN TRONG MÁY TÍNH</title>
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-light: #0d9488;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding-bottom: 40px; }
+
+    /* Header siêu mỏng 1 dòng màu xanh ngọc */
+    header {
+      background: linear-gradient(135deg, #0f766e, #14b8a6);
+      color: white;
+      padding: 6px 16px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    header h1 { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px; }
+
+    /* Layout */
+    .layout-wrapper {
+      max-width: 1100px;
+      margin: 12px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 850px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Sidebar */
+    .sidebar {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 12px;
+    }
+    .sidebar-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .palette-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 36px;
+      border-radius: 6px;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #334155;
+      transition: all 0.2s;
+    }
+    .palette-item:hover { border-color: var(--primary-light); background: #ccfbf1; }
+    
+    /* Trạng thái danh sách */
+    .palette-item.current {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .palette-item.answered {
+      background-color: var(--primary-light);
+      border-color: var(--primary);
+      color: white;
+      font-weight: bold;
+    }
+    .palette-item.correct {
+      background-color: var(--success) !important;
+      border-color: #059669 !important;
+      color: white !important;
+    }
+    .palette-item.wrong {
+      background-color: var(--danger) !important;
+      border-color: #b91c1c !important;
+      color: white !important;
+    }
+
+    .palette-legend {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .legend-item { display: flex; align-items: center; gap: 8px; }
+    .legend-box { width: 14px; height: 14px; border-radius: 4px; border: 1px solid #cbd5e1; }
+
+    /* Content Area */
+    .content-area {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Result Banner */
+    .result-banner {
+      display: none;
+      background: #f0fdf4;
+      border: 2px solid var(--success);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      animation: fadeIn 0.4s ease;
+    }
+    .result-score { font-size: 2.2rem; font-weight: 800; color: #166534; }
+    .result-text { font-size: 1.05rem; color: #15803d; margin-top: 4px; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Quiz Card */
+    .question-box {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid #f1f5f9;
+    }
+    .q-badge {
+      background: #ccfbf1;
+      color: var(--primary);
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .q-type { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+
+    .q-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .q-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .opt-btn {
+      text-align: left;
+      padding: 12px 16px;
+      background: #f8fafc;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: #334155;
+      transition: all 0.15s;
+    }
+    .opt-btn:hover:not(.disabled) { border-color: var(--primary-light); background: #f0fdfa; }
+    .opt-btn.selected { border-color: var(--primary); background: #ccfbf1; font-weight: 600; color: #0f766e; }
+    
+    /* Result states */
+    .opt-btn.correct-ans { background: #dcfce7 !important; border-color: var(--success) !important; color: #166534 !important; font-weight: bold; }
+    .opt-btn.wrong-ans { background: #fee2e2 !important; border-color: var(--danger) !important; color: #991b1b !important; }
+
+    /* Navigation Buttons */
+    .nav-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+      gap: 12px;
+    }
+    .btn-nav {
+      background: #ffffff;
+      color: var(--primary);
+      border: 1.5px solid var(--primary-light);
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-nav:hover:not(:disabled) { background: var(--primary-light); color: white; }
+    .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; border-color: #cbd5e1; color: var(--text-muted); }
+
+    .btn-action-container {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-submit {
+      background: var(--success); color: white; border: none;
+      padding: 12px 32px; font-size: 1.05rem; font-weight: 700;
+      border-radius: 8px; cursor: pointer; transition: 0.2s;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+    }
+    .btn-submit:hover { background: #059669; }
+    .btn-reset {
+      background: #64748b; color: white; border: none;
+      padding: 12px 24px; font-size: 1.05rem; font-weight: 600;
+      border-radius: 8px; cursor: pointer; transition: 0.2s;
+    }
+    .btn-reset:hover { background: #475569; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>BÀI 3: THÔNG TIN TRONG MÁY TÍNH</h1>
+  </header>
+
+  <div class="layout-wrapper">
+    
+    <!-- CỘT BẢNG SỐ CÂU (BÊN TRÁI) -->
+    <div class="sidebar">
+      <div class="sidebar-title">
+        <span>Bảng câu hỏi</span>
+        <span style="font-size:0.85rem; font-weight:normal;" id="answeredCount">0/28 đã làm</span>
+      </div>
+      <div class="palette-grid" id="paletteGrid">
+        <!-- Tự động sinh ra 28 ô câu hỏi qua JS -->
+      </div>
+      <div class="palette-legend">
+        <div class="legend-item"><div class="legend-box" style="background:#f8fafc;"></div> Chưa làm</div>
+        <div class="legend-item"><div class="legend-box" style="background:var(--primary-light);"></div> Đã chọn đáp án</div>
+        <div class="legend-item"><div class="legend-box" style="background:var(--success);"></div> Câu trả lời đúng</div>
+        <div class="legend-item"><div class="legend-box" style="background:var(--danger);"></div> Câu trả lời sai</div>
+      </div>
+    </div>
+
+    <!-- KHU VỰC LÀM BÀI 1 CÂU (BÊN PHẢI) -->
+    <div class="content-area">
+
+      <!-- Bảng kết quả sau nộp -->
+      <div id="resultBanner" class="result-banner">
+        <h2>🎉 KẾT QUẢ BÀI THI</h2>
+        <div class="result-score"><span id="finalScore">0</span> / 280</div>
+        <p class="result-text" id="feedbackGrade">Đã hoàn thành chấm bài!</p>
+      </div>
+
+      <!-- Khung câu hỏi hiện tại -->
+      <div class="question-box">
+        <div>
+          <div class="q-header">
+            <span class="q-badge" id="qBadge">Câu 1 / 28</span>
+            <span class="q-type" id="qType">Trắc nghiệm 4 lựa chọn</span>
+          </div>
+          <div class="q-title" id="qTitle">Nội dung câu hỏi...</div>
+          <div class="q-options" id="qOptions">
+            <!-- Tự động kết xuất các lựa chọn -->
+          </div>
+        </div>
+
+        <!-- Nút tới / lui -->
+        <div class="nav-controls">
+          <button class="btn-nav" id="btnPrev" onclick="navigateQ(-1)">⬅️ Câu trước</button>
+          <span style="font-size:0.9rem; color:var(--text-muted); font-weight:600;" id="qIndicator">1 / 28</span>
+          <button class="btn-nav" id="btnNext" onclick="navigateQ(1)">Câu sau ➡️</button>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="btn-action-container">
+        <button class="btn-submit" onclick="submitAssessment()">🚀 NỘP BÀI & CHẤM ĐIỂM</button>
+        <button class="btn-reset" onclick="resetAssessment()">🔄 LÀM LẠI BÀI THI</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Audio synthesis without external audio files
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSound(type) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'success') {
+        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(554.37, audioCtx.currentTime + 0.1);
+        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.5);
+      } else {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      }
+    }
+
+    // NGÂN HÀNG 28 CÂU HỎI BÀI 3 (24 MCQ + 4 TF)
+    const questions = [
+      // 24 Câu MCQ
+      { id: 1, type: 'mcq', title: 'Máy tính thông dụng hiện nay làm việc trực tiếp với mấy kí hiệu cơ bản?', opts: ['A. 2 kí hiệu (0 và 1)', 'B. 8 kí hiệu (từ 0 đến 7)', 'C. 10 kí hiệu (từ 0 đến 9)', 'D. 26 kí hiệu (bảng chữ cái tiếng Anh)'], ans: 0 },
+      { id: 2, type: 'mcq', title: 'Dãy bit là gì?', opts: ['A. Là dãy các số nguyên từ 0 đến 9', 'B. Là dãy những kí hiệu chỉ gồm hai chữ số 0 và 1', 'C. Là các chữ cái trong bảng chữ cái', 'D. Là dãy các nốt nhạc được số hoá'], ans: 1 },
+      { id: 3, type: 'mcq', title: 'Từ "bit" trong tin học là từ viết tắt của cụm từ tiếng Anh nào?', opts: ['A. Byte Information Tool', 'B. Binary digIT', 'C. Best Internet Technology', 'D. Basic Input Terminal'], ans: 1 },
+      { id: 4, type: 'mcq', title: 'Đơn vị đo nhỏ nhất trong lưu trữ thông tin của máy tính là gì?', opts: ['A. Byte (B)', 'B. Bit', 'C. Kilobyte (KB)', 'D. Megabyte (MB)'], ans: 1 },
+      { id: 5, type: 'mcq', title: 'Máy tính sử dụng dãy bit để biểu diễn những dạng thông tin nào?', opts: ['A. Chỉ biểu diễn các số', 'B. Chỉ biểu diễn văn bản chữ viết', 'C. Chỉ biểu diễn âm thanh và hình ảnh', 'D. Biểu diễn tất cả thông tin dạng số, văn bản, hình ảnh và âm thanh'], ans: 3 },
+      { id: 6, type: 'mcq', title: 'Một Byte (B) được tạo thành từ bao nhiêu bit liên tục?', opts: ['A. 2 bit', 'B. 4 bit', 'C. 8 bit', 'D. 16 bit'], ans: 2 },
+      { id: 7, type: 'mcq', title: 'Bằng phương pháp chia đôi dãy số từ 0 đến 7, số 4 được mã hoá thành dãy bit nào?', opts: ['A. 011', 'B. 100', 'C. 101', 'D. 110'], ans: 1 },
+      { id: 8, type: 'mcq', title: 'Bằng phương pháp chia đôi dãy số từ 0 đến 7, số 3 được mã hoá thành dãy bit nào?', opts: ['A. 000', 'B. 010', 'C. 011', 'D. 111'], ans: 2 },
+      { id: 9, type: 'mcq', title: 'Bằng phương pháp chia đôi dãy số từ 0 đến 7, số 6 được mã hoá thành dãy bit nào?', opts: ['A. 100', 'B. 101', 'C. 110', 'D. 111'], ans: 2 },
+      { id: 10, type: 'mcq', title: 'Để chuyển một văn bản thành dãy bit, máy tính thực hiện như thế nào?', opts: ['A. Chuyển toàn bộ đoạn văn bản thành 1 bit duy nhất', 'B. Chuyển từng kí tự một thành dãy bit theo bảng mã quy ước', 'C. Chỉ chuyển các dấu câu, không chuyển chữ cái', 'D. Đổi màu của văn bản thành màu đen trắng'], ans: 1 },
+      { id: 11, type: 'mcq', title: 'Theo Bảng 1.2 trong SGK, kí tự "C" được mã hoá thành dãy bit nào?', opts: ['A. 01000001', 'B. 01000010', 'C. 01000011', 'D. 01000100'], ans: 2 },
+      { id: 12, type: 'mcq', title: 'Hình ảnh kĩ thuật số được tạo thành từ các điểm rất nhỏ gọi là gì?', opts: ['A. Điểm ảnh (Pixel)', 'B. Kí tự (Character)', 'C. Tần số (Hertz)', 'D. Nhãn dữ liệu (Tag)'], ans: 0 },
+      { id: 13, type: 'mcq', title: 'Trong quy ước mã hoá hình ảnh đen trắng đơn giản trên lưới ô vuông, mỗi pixel màu đen và màu trắng tương ứng là:', opts: ['A. Màu đen là 0, màu trắng là 1', 'B. Màu đen là 1, màu trắng là 0', 'C. Màu đen là 8, màu trắng là 0', 'D. Màu đen là 1, màu trắng là 2'], ans: 1 },
+      { id: 14, type: 'mcq', title: 'Âm thanh phát ra nốt La chuẩn có tần số rung của màng loa/dây đàn là bao nhiêu lần mỗi giây?', opts: ['A. 220 lần', 'B. 440 lần', 'C. 880 lần', 'D. 1024 lần'], ans: 1 },
+      { id: 15, type: 'mcq', title: 'Tốc độ rung (tần số) của âm thanh được ghi lại dưới dạng nào trước khi chuyển thành dãy bit?', opts: ['A. Dưới dạng giá trị số', 'B. Dưới dạng màu sắc', 'C. Dưới dạng hình vẽ lưới ô vuông', 'D. Dưới dạng chữ cái La-tinh'], ans: 0 },
+      { id: 16, type: 'mcq', title: 'Đơn vị đo 1 Kilobyte (KB) có giá trị bằng bao nhiêu Byte?', opts: ['A. 100 Byte', 'B. 1000 Byte', 'C. 1024 Byte', 'D. 1048576 Byte'], ans: 2 },
+      { id: 17, type: 'mcq', title: 'Đơn vị đo 1 Megabyte (MB) có giá trị bằng bao nhiêu Kilobyte (KB)?', opts: ['A. 100 KB', 'B. 1000 KB', 'C. 1024 KB', 'D. 8 KB'], ans: 2 },
+      { id: 18, type: 'mcq', title: 'Đơn vị đo 1 Gigabyte (GB) có giá trị xấp xỉ bao nhiêu byte?', opts: ['A. Khoảng 1 nghìn byte', 'B. Khoảng 1 triệu byte', 'C. Khoảng 1 tỉ byte', 'D. Khoảng 1 nghìn tỉ byte'], ans: 2 },
+      { id: 19, type: 'mcq', title: 'Đơn vị đo 1 Terabyte (TB) có giá trị bằng:', opts: ['A. 1024 MB', 'B. 1024 GB', 'C. 1000 GB', 'D. 1024 KB'], ans: 1 },
+      { id: 20, type: 'mcq', title: 'Dãy các đơn vị đo dung lượng thông tin được sắp xếp theo thứ tự TĂNG DẦN là:', opts: ['A. Bit → Byte → KB → MB → GB → TB', 'B. Byte → Bit → KB → GB → MB → TB', 'C. TB → GB → MB → KB → Byte → Bit', 'D. Bit → Byte → MB → KB → GB → TB'], ans: 0 },
+      { id: 21, type: 'mcq', title: 'Một thẻ nhớ có dung lượng 64 GB xấp xỉ chứa được khoảng bao nhiêu byte?', opts: ['A. Xấp xỉ 64 nghìn byte', 'B. Xấp xỉ 64 triệu byte', 'C. Xấp xỉ 64 tỉ byte', 'D. Xấp xỉ 64 nghìn tỉ byte'], ans: 2 },
+      { id: 22, type: 'mcq', title: 'Số nhị phân là số được viết chỉ từ hai kí hiệu nào?', opts: ['A. 1 và 2', 'B. 0 và 1', 'C. A và B', 'D. + và -'], ans: 1 },
+      { id: 23, type: 'mcq', title: 'Một bức ảnh màu kĩ thuật số chất lượng cao thường có đặc điểm biểu diễn điểm ảnh như thế nào so với ảnh đen trắng?', opts: ['A. Mỗi pixel chỉ cần dùng đúng 1 bit', 'B. Mỗi pixel được biểu diễn bằng nhiều bit hơn', 'C. Không thể biểu diễn bằng dãy bit', 'D. Chỉ lưu trữ được chữ viết'], ans: 1 },
+      { id: 24, type: 'mcq', title: 'Dung lượng một tệp bài hát dạng MP3 khoảng 4 MB, tương đương xấp xỉ bao nhiêu byte?', opts: ['A. Khoảng 4 nghìn byte', 'B. Khoảng 4 triệu byte', 'C. Khoảng 4 tỉ byte', 'D. Khoảng 400 byte'], ans: 1 },
+
+      // 4 Câu Đúng / Sai (TF)
+      { id: 25, type: 'tf', title: 'Câu 25 (Đ/S): "Một bit là đơn vị lưu trữ thông tin chỉ có thể nhận một trong hai trạng thái là 0 hoặc 1."', opts: ['ĐÚNG', 'SAI'], ans: 0 },
+      { id: 26, type: 'tf', title: 'Câu 26 (Đ/S): "1 Megabyte (MB) có giá trị bằng chính xác 1000 Kilobyte (KB)."', opts: ['ĐÚNG', 'SAI'], ans: 1 },
+      { id: 27, type: 'tf', title: 'Câu 27 (Đ/S): "Trong máy tính, mọi thông tin dạng hình ảnh, văn bản và âm thanh đều được quy đổi thành các dãy bit."', opts: ['ĐÚNG', 'SAI'], ans: 0 },
+      { id: 28, type: 'tf', title: 'Câu 28 (Đ/S): "Một ổ đĩa cứng có dung lượng 2 TB có sức chứa dữ liệu nhỏ hơn một thẻ nhớ có dung lượng 512 GB."', opts: ['ĐÚNG', 'SAI'], ans: 1 }
+    ];
+
+    let currentQIdx = 0;
+    let userAnswers = {};
+    let isSubmitted = false;
+
+    function initQuiz() {
+      const palette = document.getElementById('paletteGrid');
+      palette.innerHTML = '';
+      
+      questions.forEach((q, idx) => {
+        const item = document.createElement('div');
+        item.className = 'palette-item' + (idx === 0 ? ' current' : '');
+        item.id = `pal-${idx}`;
+        item.innerText = idx < 24 ? (idx + 1) : `${idx + 1}*`;
+        item.title = `Chuyển tới câu ${idx + 1}`;
+        item.onclick = () => jumpToQ(idx);
+        palette.appendChild(item);
+      });
+
+      renderQuestion(0);
+      updateStatusCount();
+    }
+
+    function renderQuestion(idx) {
+      currentQIdx = idx;
+      const q = questions[idx];
+
+      document.getElementById('qBadge').innerText = `Câu ${idx + 1} / 28`;
+      document.getElementById('qType').innerText = q.type === 'mcq' ? 'Trắc nghiệm 4 lựa chọn' : 'Trắc nghiệm Đúng / Sai';
+      document.getElementById('qTitle').innerText = q.title;
+      document.getElementById('qIndicator').innerText = `${idx + 1} / 28`;
+
+      document.getElementById('btnPrev').disabled = (idx === 0);
+      document.getElementById('btnNext').disabled = (idx === questions.length - 1);
+
+      document.querySelectorAll('.palette-item').forEach((p, i) => {
+        if (i === idx) p.classList.add('current');
+        else p.classList.remove('current');
+      });
+
+      const optContainer = document.getElementById('qOptions');
+      optContainer.innerHTML = '';
+
+      q.opts.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.innerText = optText;
+
+        if (userAnswers[idx] === optIdx) {
+          btn.classList.add('selected');
+        }
+
+        if (isSubmitted) {
+          btn.classList.add('disabled');
+          if (optIdx === q.ans) {
+            btn.classList.add('correct-ans');
+          } else if (userAnswers[idx] === optIdx) {
+            btn.classList.add('wrong-ans');
+          }
+        } else {
+          btn.onclick = () => selectOption(idx, optIdx);
+        }
+
+        optContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(qIdx, optIdx) {
+      if (isSubmitted) return;
+      userAnswers[qIdx] = optIdx;
+      
+      document.getElementById(`pal-${qIdx}`).classList.add('answered');
+      renderQuestion(qIdx);
+      updateStatusCount();
+    }
+
+    function navigateQ(step) {
+      const newIdx = currentQIdx + step;
+      if (newIdx >= 0 && newIdx < questions.length) {
+        renderQuestion(newIdx);
+      }
+    }
+
+    function jumpToQ(idx) {
+      renderQuestion(idx);
+    }
+
+    function updateStatusCount() {
+      const count = Object.keys(userAnswers).length;
+      document.getElementById('answeredCount').innerText = `${count}/28 đã làm`;
+    }
+
+    function submitAssessment() {
+      if (isSubmitted) {
+        alert('Bạn đã nộp bài rồi! Bấm "Làm lại bài thi" nếu muốn thực hành lại.');
+        return;
+      }
+
+      const totalAnswered = Object.keys(userAnswers).length;
+      if (totalAnswered < questions.length) {
+        const confirmSubmit = confirm(`Bạn mới trả lời ${totalAnswered}/${questions.length} câu. Bạn có chắc chắn muốn nộp bài không?`);
+        if (!confirmSubmit) return;
+      }
+
+      isSubmitted = true;
+      let score = 0;
+
+      questions.forEach((q, idx) => {
+        const pal = document.getElementById(`pal-${idx}`);
+        pal.classList.remove('answered');
+
+        if (userAnswers[idx] === q.ans) {
+          score += 10;
+          pal.classList.add('correct');
+        } else {
+          pal.classList.add('wrong');
+        }
+      });
+
+      const banner = document.getElementById('resultBanner');
+      const scoreElem = document.getElementById('finalScore');
+      const gradeElem = document.getElementById('feedbackGrade');
+      scoreElem.innerText = score;
+      
+      if (score >= 240) {
+        gradeElem.innerText = '🌟 Xuất sắc! Em đã nắm rất vững toàn bộ 28 câu kiến thức Thông tin trong máy tính!';
+      } else if (score >= 180) {
+        gradeElem.innerText = '👍 Khá tốt! Em hãy bấm lại các câu màu đỏ trên danh sách để xem lại kiến thức!';
+      } else {
+        gradeElem.innerText = '📖 Cần cố gắng hơn! Em hãy xem lại nội dung Bài 3 và bấm làm lại bài thi.';
+      }
+
+      banner.style.display = 'block';
+      renderQuestion(currentQIdx);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (score >= 180) {
+        playSound('success');
+      } else {
+        playSound('error');
+      }
+    }
+
+    function resetAssessment() {
+      userAnswers = {};
+      isSubmitted = false;
+      document.getElementById('resultBanner').style.display = 'none';
+      
+      initQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onload = initQuiz;
+  </script>
+</body>
+</html>
