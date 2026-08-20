@@ -333,9 +333,9 @@
       gain.connect(audioCtx.destination);
 
       if (type === 'success') {
-        osc.frequency.setValueAtTime(440, audioCtx.currentTime); // A4
-        osc.frequency.setValueAtTime(554.37, audioCtx.currentTime + 0.1); // C#5
-        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.2); // E5
+        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(554.37, audioCtx.currentTime + 0.1);
+        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.2);
         gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
         osc.start();
@@ -350,39 +350,39 @@
       }
     }
 
-    // NGÂN HÀNG 28 CÂU HỎI (24 MCQ + 4 TF)
+    // NGÂN HÀNG 28 CÂU HỎI (ĐÃ LOẠI BỎ TOÀN BỘ CITE)
     const questions = [
       // 24 Câu MCQ
       { id: 1, type: 'mcq', title: 'Cần tối thiểu bao nhiêu máy tính kết nối với nhau để tạo thành một mạng máy tính?', opts: ['A. 1 máy tính', 'B. 2 máy tính', 'C. 5 máy tính', 'D. 10 máy tính trở lên'], ans: 1 },
-      { id: 2, type: 'mcq', title: 'Lợi ích cơ bản nhất của mạng máy tính là gì?[cite: 4]', opts: ['A. Giúp máy tính chạy nhanh hơn và tăng tuổi thọ pin', 'B. Giúp tiết kiệm điện năng tiêu thụ', 'C. Trao đổi thông tin, chia sẻ dữ liệu và dùng chung các thiết bị', 'D. Tự động sửa chữa phần cứng khi hỏng'], ans: 2 },
-      { id: 3, type: 'mcq', title: 'Một mạng máy tính tiêu chuẩn gồm có mấy thành phần chính?[cite: 4]', opts: ['A. 2 thành phần', 'B. 3 thành phần', 'C. 4 thành phần', 'D. 5 thành phần'], ans: 1 },
-      { id: 4, type: 'mcq', title: 'Thiết bị nào sau đây được xếp vào nhóm "Thiết bị đầu cuối"?[cite: 4]', opts: ['A. Bộ chuyển mạch (Switch)', 'B. Bộ định tuyến (Router)', 'C. Dây cáp mạng', 'D. Máy in kết nối mạng'], ans: 3 },
-      { id: 5, type: 'mcq', title: 'Nhóm thiết bị nào sau đây đều thuộc nhóm "Thiết bị kết nối"?[cite: 4]', opts: ['A. Cáp mạng, Switch (bộ chuyển mạch), Router (bộ định tuyến)', 'B. Máy tính để bàn, laptop, smartphone', 'C. Máy quét, máy in, máy ảnh số', 'D. Màn hình, bàn phím, chuột máy tính'], ans: 0 },
-      { id: 6, type: 'mcq', title: 'Môi trường truyền dẫn của mạng không dây sử dụng loại sóng nào?[cite: 4]', opts: ['A. Sóng âm thanh', 'B. Sóng vô tuyến (như Wi-Fi, Bluetooth)', 'C. Sóng siêu âm', 'D. Dây dẫn kim loại'], ans: 1 },
-      { id: 7, type: 'mcq', title: 'Thiết bị nào thực hiện nhiệm vụ phát sóng và kết nối các thiết bị không dây vào mạng?[cite: 4]', opts: ['A. Bộ định tuyến không dây (Wireless Router / Access Point)', 'B. Dây cáp mạng LAN', 'C. Máy quét tài liệu', 'D. Máy in laser'], ans: 0 },
-      { id: 8, type: 'mcq', title: 'Ưu điểm nổi bật nhất của mạng không dây so với mạng có dây là gì?[cite: 4]', opts: ['A. Không bao giờ bị mất tín hiệu', 'B. Thuận tiện lắp đặt, người dùng linh hoạt di chuyển mà vẫn giữ kết nối', 'C. Tốc độ luôn nhanh gấp 100 lần mạng cáp', 'D. Không cần dùng bất kỳ thiết bị kết nối nào'], ans: 1 },
-      { id: 9, type: 'mcq', title: 'Khi một máy tính trong phòng tin học gửi lệnh in tới máy in dùng chung, hoạt động này thể hiện lợi ích nào?[cite: 4]', opts: ['A. Chia sẻ tài nguyên phần cứng (dùng chung thiết bị)', 'B. Tăng bộ nhớ cho máy in', 'C. Diệt virus cho máy in', 'D. Tiết kiệm mực in'], ans: 0 },
-      { id: 10, type: 'mcq', title: 'Thành phần nào đóng vai trò như hệ thống duy trì "luật lệ giao thông" trên mạng máy tính?[cite: 4]', opts: ['A. Thiết bị đầu cuối', 'B. Phần mềm mạng', 'C. Dây cáp mạng', 'D. Cột ăng-ten'], ans: 1 },
-      { id: 11, type: 'mcq', title: 'Điểm tương đồng nổi bật giữa mạng giao thông và mạng máy tính là:[cite: 4]', opts: ['A. Cùng có phương tiện cơ giới chạy qua', 'B. Cùng có tính kết nối và chia sẻ tài nguyên', 'C. Cùng làm bằng xi măng cốt thép', 'D. Cùng chịu sự điều khiển của đèn tín hiệu giao thông 3 màu'], ans: 1 },
-      { id: 12, type: 'mcq', title: 'Thiết bị nào sau đây KHÔNG PHẢI là thiết bị đầu cuối?[cite: 4]', opts: ['A. Điện thoại thông minh', 'B. Máy tính xách tay (Laptop)', 'C. Bộ chuyển mạch (Switch)', 'D. Máy quét (Scanner)'], ans: 2 },
-      { id: 13, type: 'mcq', title: 'Khi gửi tệp hình ảnh bài tập từ laptop sang máy tính của bạn An trong cùng phòng, bạn đã thực hiện hoạt động gì?[cite: 4]', opts: ['A. Trao đổi và chia sẻ dữ liệu', 'B. Sửa chữa hệ điều hành', 'C. Nâng cấp ổ cứng', 'D. Tiết kiệm dung lượng RAM'], ans: 0 },
-      { id: 14, type: 'mcq', title: 'Đường truyền dữ liệu "nhìn thấy được" trong mạng máy tính là gì?[cite: 4]', opts: ['A. Sóng vô tuyến Wi-Fi', 'B. Sóng Bluetooth', 'C. Dây cáp mạng', 'D. Sóng hồng ngoại'], ans: 2 },
-      { id: 15, type: 'mcq', title: 'Trường hợp nào sau đây mạng không dây tiện dụng và ưu việt hơn mạng có dây?[cite: 4]', opts: ['A. Khi hành khách đang đi trên xe buýt cần dùng smartphone đọc tin tức', 'B. Khi cố định một máy chủ lớn trong phòng kín nhiều năm', 'C. Khi cần nối 2 máy tính đặt sát cạnh nhau trên bàn làm việc cố định', 'D. Khi không có thiết bị phát sóng vô tuyến'], ans: 0 },
-      { id: 16, type: 'mcq', title: 'Thiết bị nào sau đây vừa có thể kết nối mạng có dây vừa có thể kết nối mạng không dây?[cite: 4]', opts: ['A. Máy tính xách tay (Laptop)', 'B. Dây cáp mạng xoắn đôi', 'C. Chuột quang có dây', 'D. Đĩa CD'], ans: 0 },
-      { id: 17, type: 'mcq', title: 'Tại sao ở các nơi công cộng như sân bay, quán cà phê người ta thường lắp đặt mạng không dây?[cite: 4]', opts: ['A. Vì không mất tiền điện', 'B. Giúp nhiều người truy cập linh hoạt, không cần kéo dây rườm rà', 'C. Vì sóng không dây không cần thiết bị truyền dẫn', 'D. Vì mạng không dây không bao giờ gặp sự cố'], ans: 1 },
-      { id: 18, type: 'mcq', title: 'Bộ chuyển mạch (Switch) đóng vai trò gì trong mạng máy tính?[cite: 4]', opts: ['A. Là thiết bị kết nối trung gian giúp các máy tính liên kết với nhau', 'B. Là thiết bị đầu cuối để gõ chữ', 'C. Là phần mềm diệt virus', 'D. Là thiết bị lưu trữ giống USB'], ans: 0 },
-      { id: 19, type: 'mcq', title: 'Ví dụ nào sau đây là ứng dụng truyền thông (phần mềm mạng) trên thiết bị đầu cuối?[cite: 4]', opts: ['A. Ứng dụng Zalo, Gmail, Trình duyệt web Chrome', 'B. Dây cáp mạng', 'C. Bộ định tuyến Router', 'D. Chuột máy tính'], ans: 0 },
-      { id: 20, type: 'mcq', title: 'Tác nhân nào sau đây có thể làm hư hại đường truyền mạng có dây mà ít ảnh hưởng đến mạng không dây?[cite: 4]', opts: ['A. Đứt cáp do mưa bão hoặc động vật (chuột) cắn', 'B. Hết pin điện thoại', 'C. Tắt nguồn màn hình', 'D. Bụi bám bàn phím'], ans: 0 },
-      { id: 21, type: 'mcq', title: 'Phát biểu nào sau đây đúng khi nói về mạng máy tính?[cite: 4]', opts: ['A. Mạng máy tính chỉ truyền được dữ liệu dạng chữ, không truyền được ảnh và video', 'B. Mạng máy tính kết nối các thiết bị để truyền thông tin và chia sẻ tài nguyên', 'C. Mọi thiết bị kết nối mạng đều bắt buộc phải dùng dây', 'D. Người dùng trong mạng không thể gửi tệp cho nhau'], ans: 1 },
-      { id: 22, type: 'mcq', title: 'Khi kết nối 5 máy tính trong thư viện trường, thiết bị trung gian kết nối thường được dùng là:[cite: 4]', opts: ['A. Bộ chuyển mạch (Switch) hoặc Bộ phát Wi-Fi (Router)', 'B. Máy quét ảnh', 'C. Máy chiếu đa năng', 'D. Loa thùng'], ans: 0 },
-      { id: 23, type: 'mcq', title: 'Khi điện thoại của em kết nối Bluetooth với tai nghe không dây để nghe nhạc, đây là dạng kết nối gì?[cite: 4]', opts: ['A. Kết nối mạng không dây sử dụng sóng ngắn', 'B. Kết nối cáp đồng trục', 'C. Kết nối mạng có dây siêu nhỏ', 'D. Kết nối qua vệ tinh viễn thông'], ans: 0 },
-      { id: 24, type: 'mcq', title: 'Để một mạng máy tính hoạt động trơn tru và an toàn, cần có yếu tố nào điều khiển và quản lý quá trình truyền dữ liệu?[cite: 4]', opts: ['A. Phần mềm mạng', 'B. Vỏ case máy tính', 'C. Giấy in', 'D. Bàn di chuột'], ans: 0 },
+      { id: 2, type: 'mcq', title: 'Lợi ích cơ bản nhất của mạng máy tính là gì?', opts: ['A. Giúp máy tính chạy nhanh hơn và tăng tuổi thọ pin', 'B. Giúp tiết kiệm điện năng tiêu thụ', 'C. Trao đổi thông tin, chia sẻ dữ liệu và dùng chung các thiết bị', 'D. Tự động sửa chữa phần cứng khi hỏng'], ans: 2 },
+      { id: 3, type: 'mcq', title: 'Một mạng máy tính tiêu chuẩn gồm có mấy thành phần chính?', opts: ['A. 2 thành phần', 'B. 3 thành phần', 'C. 4 thành phần', 'D. 5 thành phần'], ans: 1 },
+      { id: 4, type: 'mcq', title: 'Thiết bị nào sau đây được xếp vào nhóm "Thiết bị đầu cuối"?', opts: ['A. Bộ chuyển mạch (Switch)', 'B. Bộ định tuyến (Router)', 'C. Dây cáp mạng', 'D. Máy in kết nối mạng'], ans: 3 },
+      { id: 5, type: 'mcq', title: 'Nhóm thiết bị nào sau đây đều thuộc nhóm "Thiết bị kết nối"?', opts: ['A. Cáp mạng, Switch (bộ chuyển mạch), Router (bộ định tuyến)', 'B. Máy tính để bàn, laptop, smartphone', 'C. Máy quét, máy in, máy ảnh số', 'D. Màn hình, bàn phím, chuột máy tính'], ans: 0 },
+      { id: 6, type: 'mcq', title: 'Môi trường truyền dẫn của mạng không dây sử dụng loại sóng nào?', opts: ['A. Sóng âm thanh', 'B. Sóng vô tuyến (như Wi-Fi, Bluetooth)', 'C. Sóng siêu âm', 'D. Dây dẫn kim loại'], ans: 1 },
+      { id: 7, type: 'mcq', title: 'Thiết bị nào thực hiện nhiệm vụ phát sóng và kết nối các thiết bị không dây vào mạng?', opts: ['A. Bộ định tuyến không dây (Wireless Router / Access Point)', 'B. Dây cáp mạng LAN', 'C. Máy quét tài liệu', 'D. Máy in laser'], ans: 0 },
+      { id: 8, type: 'mcq', title: 'Ưu điểm nổi bật nhất của mạng không dây so với mạng có dây là gì?', opts: ['A. Không bao giờ bị mất tín hiệu', 'B. Thuận tiện lắp đặt, người dùng linh hoạt di chuyển mà vẫn giữ kết nối', 'C. Tốc độ luôn nhanh gấp 100 lần mạng cáp', 'D. Không cần dùng bất kỳ thiết bị kết nối nào'], ans: 1 },
+      { id: 9, type: 'mcq', title: 'Khi một máy tính trong phòng tin học gửi lệnh in tới máy in dùng chung, hoạt động này thể hiện lợi ích nào?', opts: ['A. Chia sẻ tài nguyên phần cứng (dùng chung thiết bị)', 'B. Tăng bộ nhớ cho máy in', 'C. Diệt virus cho máy in', 'D. Tiết kiệm mực in'], ans: 0 },
+      { id: 10, type: 'mcq', title: 'Thành phần nào đóng vai trò như hệ thống duy trì "luật lệ giao thông" trên mạng máy tính?', opts: ['A. Thiết bị đầu cuối', 'B. Phần mềm mạng', 'C. Dây cáp mạng', 'D. Cột ăng-ten'], ans: 1 },
+      { id: 11, type: 'mcq', title: 'Điểm tương đồng nổi bật giữa mạng giao thông và mạng máy tính là:', opts: ['A. Cùng có phương tiện cơ giới chạy qua', 'B. Cùng có tính kết nối và chia sẻ tài nguyên', 'C. Cùng làm bằng xi măng cốt thép', 'D. Cùng chịu sự điều khiển của đèn tín hiệu giao thông 3 màu'], ans: 1 },
+      { id: 12, type: 'mcq', title: 'Thiết bị nào sau đây KHÔNG PHẢI là thiết bị đầu cuối?', opts: ['A. Điện thoại thông minh', 'B. Máy tính xách tay (Laptop)', 'C. Bộ chuyển mạch (Switch)', 'D. Máy quét (Scanner)'], ans: 2 },
+      { id: 13, type: 'mcq', title: 'Khi gửi tệp hình ảnh bài tập từ laptop sang máy tính của bạn An trong cùng phòng, bạn đã thực hiện hoạt động gì?', opts: ['A. Trao đổi và chia sẻ dữ liệu', 'B. Sửa chữa hệ điều hành', 'C. Nâng cấp ổ cứng', 'D. Tiết kiệm dung lượng RAM'], ans: 0 },
+      { id: 14, type: 'mcq', title: 'Đường truyền dữ liệu "nhìn thấy được" trong mạng máy tính là gì?', opts: ['A. Sóng vô tuyến Wi-Fi', 'B. Sóng Bluetooth', 'C. Dây cáp mạng', 'D. Sóng hồng ngoại'], ans: 2 },
+      { id: 15, type: 'mcq', title: 'Trường hợp nào sau đây mạng không dây tiện dụng và ưu việt hơn mạng có dây?', opts: ['A. Khi hành khách đang đi trên xe buýt cần dùng smartphone đọc tin tức', 'B. Khi cố định một máy chủ lớn trong phòng kín nhiều năm', 'C. Khi cần nối 2 máy tính đặt sát cạnh nhau trên bàn làm việc cố định', 'D. Khi không có thiết bị phát sóng vô tuyến'], ans: 0 },
+      { id: 16, type: 'mcq', title: 'Thiết bị nào sau đây vừa có thể kết nối mạng có dây vừa có thể kết nối mạng không dây?', opts: ['A. Máy tính xách tay (Laptop)', 'B. Dây cáp mạng xoắn đôi', 'C. Chuột quang có dây', 'D. Đĩa CD'], ans: 0 },
+      { id: 17, type: 'mcq', title: 'Tại sao ở các nơi công cộng như sân bay, quán cà phê người ta thường lắp đặt mạng không dây?', opts: ['A. Vì không mất tiền điện', 'B. Giúp nhiều người truy cập linh hoạt, không cần kéo dây rườm rà', 'C. Vì sóng không dây không cần thiết bị truyền dẫn', 'D. Vì mạng không dây không bao giờ gặp sự cố'], ans: 1 },
+      { id: 18, type: 'mcq', title: 'Bộ chuyển mạch (Switch) đóng vai trò gì trong mạng máy tính?', opts: ['A. Là thiết bị kết nối trung gian giúp các máy tính liên kết với nhau', 'B. Là thiết bị đầu cuối để gõ chữ', 'C. Là phần mềm diệt virus', 'D. Là thiết bị lưu trữ giống USB'], ans: 0 },
+      { id: 19, type: 'mcq', title: 'Ví dụ nào sau đây là ứng dụng truyền thông (phần mềm mạng) trên thiết bị đầu cuối?', opts: ['A. Ứng dụng Zalo, Gmail, Trình duyệt web Chrome', 'B. Dây cáp mạng', 'C. Bộ định tuyến Router', 'D. Chuột máy tính'], ans: 0 },
+      { id: 20, type: 'mcq', title: 'Tác nhân nào sau đây có thể làm hư hại đường truyền mạng có dây mà ít ảnh hưởng đến mạng không dây?', opts: ['A. Đứt cáp do mưa bão hoặc động vật (chuột) cắn', 'B. Hết pin điện thoại', 'C. Tắt nguồn màn hình', 'D. Bụi bám bàn phím'], ans: 0 },
+      { id: 21, type: 'mcq', title: 'Phát biểu nào sau đây đúng khi nói về mạng máy tính?', opts: ['A. Mạng máy tính chỉ truyền được dữ liệu dạng chữ, không truyền được ảnh và video', 'B. Mạng máy tính kết nối các thiết bị để truyền thông tin và chia sẻ tài nguyên', 'C. Mọi thiết bị kết nối mạng đều bắt buộc phải dùng dây', 'D. Người dùng trong mạng không thể gửi tệp cho nhau'], ans: 1 },
+      { id: 22, type: 'mcq', title: 'Khi kết nối 5 máy tính trong thư viện trường, thiết bị trung gian kết nối thường được dùng là:', opts: ['A. Bộ chuyển mạch (Switch) hoặc Bộ phát Wi-Fi (Router)', 'B. Máy quét ảnh', 'C. Máy chiếu đa năng', 'D. Loa thùng'], ans: 0 },
+      { id: 23, type: 'mcq', title: 'Khi điện thoại của em kết nối Bluetooth với tai nghe không dây để nghe nhạc, đây là dạng kết nối gì?', opts: ['A. Kết nối mạng không dây sử dụng sóng ngắn', 'B. Kết nối cáp đồng trục', 'C. Kết nối mạng có dây siêu nhỏ', 'D. Kết nối qua vệ tinh viễn thông'], ans: 0 },
+      { id: 24, type: 'mcq', title: 'Để một mạng máy tính hoạt động trơn tru và an toàn, cần có yếu tố nào điều khiển và quản lý quá trình truyền dữ liệu?', opts: ['A. Phần mềm mạng', 'B. Vỏ case máy tính', 'C. Giấy in', 'D. Bàn di chuột'], ans: 0 },
 
       // 4 Câu Đúng / Sai (TF)
-      { id: 25, type: 'tf', title: 'Câu 25 (Đ/S): "Chỉ những máy tính để bàn (PC) và máy tính xách tay (Laptop) mới được xem là thiết bị đầu cuối trong mạng máy tính."[cite: 4]', opts: ['ĐÚNG', 'SAI'], ans: 1 }, // Sai
-      { id: 26, type: 'tf', title: 'Câu 26 (Đ/S): "Điện thoại thông minh kết nối vào bộ phát Wi-Fi tại nhà là một ví dụ tiêu biểu về kết nối mạng không dây."[cite: 4]', opts: ['ĐÚNG', 'SAI'], ans: 0 }, // Đúng
-      { id: 27, type: 'tf', title: 'Câu 27 (Đ/S): "Việc lắp đặt mạng không dây giúp tránh được nguy cơ đứt đường truyền do thiên tai bão gió hoặc chuột cắn dây dẫn."[cite: 4]', opts: ['ĐÚNG', 'SAI'], ans: 0 }, // Đúng
-      { id: 28, type: 'tf', title: 'Câu 28 (Đ/S): "Mạng máy tính chỉ có thể kết nối các thiết bị trong cùng một căn phòng, không thể mở rộng quy mô toàn cầu."[cite: 4]', opts: ['ĐÚNG', 'SAI'], ans: 1 }  // Sai
+      { id: 25, type: 'tf', title: 'Câu 25 (Đ/S): "Chỉ những máy tính để bàn (PC) và máy tính xách tay (Laptop) mới được xem là thiết bị đầu cuối trong mạng máy tính."', opts: ['ĐÚNG', 'SAI'], ans: 1 },
+      { id: 26, type: 'tf', title: 'Câu 26 (Đ/S): "Điện thoại thông minh kết nối vào bộ phát Wi-Fi tại nhà là một ví dụ tiêu biểu về kết nối mạng không dây."', opts: ['ĐÚNG', 'SAI'], ans: 0 },
+      { id: 27, type: 'tf', title: 'Câu 27 (Đ/S): "Việc lắp đặt mạng không dây giúp tránh được nguy cơ đứt đường truyền do thiên tai bão gió hoặc chuột cắn dây dẫn."', opts: ['ĐÚNG', 'SAI'], ans: 0 },
+      { id: 28, type: 'tf', title: 'Câu 28 (Đ/S): "Mạng máy tính chỉ có thể kết nối các thiết bị trong cùng một căn phòng, không thể mở rộng quy mô toàn cầu."', opts: ['ĐÚNG', 'SAI'], ans: 1 }
     ];
 
     let currentQIdx = 0;
@@ -533,7 +533,7 @@
       }
 
       banner.style.display = 'block';
-      renderQuestion(currentQIdx); // refresh câu hiện tại để khóa nút và hiện màu
+      renderQuestion(currentQIdx);
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
