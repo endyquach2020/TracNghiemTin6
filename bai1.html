@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luyện tập trắc nghiệm - Bài 4: Mạng máy tính</title>
+  <title>BÀI 4: MẠNG MÁY TÍNH</title>
   <style>
     :root {
       --primary: #1e3a8a;
@@ -20,21 +20,20 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
     body { background-color: var(--bg); color: var(--text); padding-bottom: 40px; }
 
-    /* Header */
+    /* Header siêu mỏng 1 dòng */
     header {
       background: linear-gradient(135deg, #1e3a8a, #2563eb);
       color: white;
-      padding: 16px 24px;
+      padding: 6px 16px;
       text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
     }
-    header h1 { font-size: 1.5rem; font-weight: 700; }
-    header p { font-size: 0.95rem; opacity: 0.9; margin-top: 4px; }
+    header h1 { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px; }
 
     /* Layout */
     .layout-wrapper {
       max-width: 1100px;
-      margin: 20px auto;
+      margin: 12px auto;
       padding: 0 16px;
       display: grid;
       grid-template-columns: 280px 1fr;
@@ -56,7 +55,7 @@
       border: 1px solid #e2e8f0;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       position: sticky;
-      top: 20px;
+      top: 12px;
     }
     .sidebar-title {
       font-size: 1.05rem;
@@ -259,7 +258,6 @@
 
   <header>
     <h1>BÀI 4: MẠNG MÁY TÍNH</h1>
-    <p>Chủ đề 2: Mạng máy tính và Internet — Bộ câu hỏi luyện tập 28 câu</p>
   </header>
 
   <div class="layout-wrapper">
@@ -350,9 +348,8 @@
       }
     }
 
-    // NGÂN HÀNG 28 CÂU HỎI (ĐÃ LOẠI BỎ TOÀN BỘ CITE)
+    // NGÂN HÀNG 28 CÂU HỎI
     const questions = [
-      // 24 Câu MCQ
       { id: 1, type: 'mcq', title: 'Cần tối thiểu bao nhiêu máy tính kết nối với nhau để tạo thành một mạng máy tính?', opts: ['A. 1 máy tính', 'B. 2 máy tính', 'C. 5 máy tính', 'D. 10 máy tính trở lên'], ans: 1 },
       { id: 2, type: 'mcq', title: 'Lợi ích cơ bản nhất của mạng máy tính là gì?', opts: ['A. Giúp máy tính chạy nhanh hơn và tăng tuổi thọ pin', 'B. Giúp tiết kiệm điện năng tiêu thụ', 'C. Trao đổi thông tin, chia sẻ dữ liệu và dùng chung các thiết bị', 'D. Tự động sửa chữa phần cứng khi hỏng'], ans: 2 },
       { id: 3, type: 'mcq', title: 'Một mạng máy tính tiêu chuẩn gồm có mấy thành phần chính?', opts: ['A. 2 thành phần', 'B. 3 thành phần', 'C. 4 thành phần', 'D. 5 thành phần'], ans: 1 },
@@ -377,8 +374,6 @@
       { id: 22, type: 'mcq', title: 'Khi kết nối 5 máy tính trong thư viện trường, thiết bị trung gian kết nối thường được dùng là:', opts: ['A. Bộ chuyển mạch (Switch) hoặc Bộ phát Wi-Fi (Router)', 'B. Máy quét ảnh', 'C. Máy chiếu đa năng', 'D. Loa thùng'], ans: 0 },
       { id: 23, type: 'mcq', title: 'Khi điện thoại của em kết nối Bluetooth với tai nghe không dây để nghe nhạc, đây là dạng kết nối gì?', opts: ['A. Kết nối mạng không dây sử dụng sóng ngắn', 'B. Kết nối cáp đồng trục', 'C. Kết nối mạng có dây siêu nhỏ', 'D. Kết nối qua vệ tinh viễn thông'], ans: 0 },
       { id: 24, type: 'mcq', title: 'Để một mạng máy tính hoạt động trơn tru và an toàn, cần có yếu tố nào điều khiển và quản lý quá trình truyền dữ liệu?', opts: ['A. Phần mềm mạng', 'B. Vỏ case máy tính', 'C. Giấy in', 'D. Bàn di chuột'], ans: 0 },
-
-      // 4 Câu Đúng / Sai (TF)
       { id: 25, type: 'tf', title: 'Câu 25 (Đ/S): "Chỉ những máy tính để bàn (PC) và máy tính xách tay (Laptop) mới được xem là thiết bị đầu cuối trong mạng máy tính."', opts: ['ĐÚNG', 'SAI'], ans: 1 },
       { id: 26, type: 'tf', title: 'Câu 26 (Đ/S): "Điện thoại thông minh kết nối vào bộ phát Wi-Fi tại nhà là một ví dụ tiêu biểu về kết nối mạng không dây."', opts: ['ĐÚNG', 'SAI'], ans: 0 },
       { id: 27, type: 'tf', title: 'Câu 27 (Đ/S): "Việc lắp đặt mạng không dây giúp tránh được nguy cơ đứt đường truyền do thiên tai bão gió hoặc chuột cắn dây dẫn."', opts: ['ĐÚNG', 'SAI'], ans: 0 },
@@ -389,7 +384,6 @@
     let userAnswers = {};
     let isSubmitted = false;
 
-    // Khởi tạo giao diện ban đầu
     function initQuiz() {
       const palette = document.getElementById('paletteGrid');
       palette.innerHTML = '';
@@ -408,28 +402,23 @@
       updateStatusCount();
     }
 
-    // Kết xuất câu hỏi
     function renderQuestion(idx) {
       currentQIdx = idx;
       const q = questions[idx];
 
-      // Update Header
       document.getElementById('qBadge').innerText = `Câu ${idx + 1} / 28`;
       document.getElementById('qType').innerText = q.type === 'mcq' ? 'Trắc nghiệm 4 lựa chọn' : 'Trắc nghiệm Đúng / Sai';
       document.getElementById('qTitle').innerText = q.title;
       document.getElementById('qIndicator').innerText = `${idx + 1} / 28`;
 
-      // Update Nav Buttons State
       document.getElementById('btnPrev').disabled = (idx === 0);
       document.getElementById('btnNext').disabled = (idx === questions.length - 1);
 
-      // Highlight current on palette
       document.querySelectorAll('.palette-item').forEach((p, i) => {
         if (i === idx) p.classList.add('current');
         else p.classList.remove('current');
       });
 
-      // Render Options
       const optContainer = document.getElementById('qOptions');
       optContainer.innerHTML = '';
 
@@ -438,12 +427,10 @@
         btn.className = 'opt-btn';
         btn.innerText = optText;
 
-        // Trạng thái đã chọn
         if (userAnswers[idx] === optIdx) {
           btn.classList.add('selected');
         }
 
-        // Nếu đã nộp bài, tô màu kết quả
         if (isSubmitted) {
           btn.classList.add('disabled');
           if (optIdx === q.ans) {
@@ -459,19 +446,15 @@
       });
     }
 
-    // Chọn đáp án
     function selectOption(qIdx, optIdx) {
       if (isSubmitted) return;
       userAnswers[qIdx] = optIdx;
       
-      // Update màu palette
       document.getElementById(`pal-${qIdx}`).classList.add('answered');
-      
       renderQuestion(qIdx);
       updateStatusCount();
     }
 
-    // Điều hướng tới/lui
     function navigateQ(step) {
       const newIdx = currentQIdx + step;
       if (newIdx >= 0 && newIdx < questions.length) {
@@ -479,18 +462,15 @@
       }
     }
 
-    // Nhảy câu qua palette
     function jumpToQ(idx) {
       renderQuestion(idx);
     }
 
-    // Cập nhật số câu đã làm
     function updateStatusCount() {
       const count = Object.keys(userAnswers).length;
       document.getElementById('answeredCount').innerText = `${count}/28 đã làm`;
     }
 
-    // Nộp bài & Chấm điểm
     function submitAssessment() {
       if (isSubmitted) {
         alert('Bạn đã nộp bài rồi! Bấm "Làm lại bài thi" nếu muốn thực hành lại.');
@@ -518,7 +498,6 @@
         }
       });
 
-      // Hiển thị Banner kết quả
       const banner = document.getElementById('resultBanner');
       const scoreElem = document.getElementById('finalScore');
       const gradeElem = document.getElementById('feedbackGrade');
@@ -544,7 +523,6 @@
       }
     }
 
-    // Làm lại bài thi
     function resetAssessment() {
       userAnswers = {};
       isSubmitted = false;
@@ -554,7 +532,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Khởi động khi tải trang
     window.onload = initQuiz;
   </script>
 </body>
